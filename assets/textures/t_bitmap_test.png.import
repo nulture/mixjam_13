@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://m7fsd62dkf5b"
+path="res://.godot/imported/t_bitmap_test.png-a859e9b882b6c0f57978b6820764c4c3.res"
+
+[deps]
+
+source_file="res://assets/textures/t_bitmap_test.png"
+dest_files=["res://.godot/imported/t_bitmap_test.png-a859e9b882b6c0f57978b6820764c4c3.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

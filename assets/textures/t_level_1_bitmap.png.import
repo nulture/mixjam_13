@@ -1,0 +1,16 @@
+[remap]
+
+importer="bitmap"
+type="BitMap"
+uid="uid://digijbacdmtb3"
+path="res://.godot/imported/t_level_1_bitmap.png-37056c57cfcf62cb1646a52c773b98fa.res"
+
+[deps]
+
+source_file="res://assets/textures/t_level_1_bitmap.png"
+dest_files=["res://.godot/imported/t_level_1_bitmap.png-37056c57cfcf62cb1646a52c773b98fa.res"]
+
+[params]
+
+create_from=0
+threshold=0.5

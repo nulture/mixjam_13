@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3 uid="uid://cwg51gewbq7em"]
+
+[ext_resource type="PackedScene" uid="uid://bxgwl1et1p84x" path="res://scenes/pawn/pawn_digger.tscn" id="1_hqru8"]
+[ext_resource type="PackedScene" uid="uid://prb2lt1jxqms" path="res://scenes/pawn/pawn_brusher.tscn" id="2_ffhiy"]
+[ext_resource type="Script" path="res://scenes/levels/destructible_terrain.gd" id="3_m02dc"]
+[ext_resource type="BitMap" uid="uid://digijbacdmtb3" path="res://assets/textures/t_level_1_bitmap.png" id="4_767te"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1wl7y"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_riapw"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_b14gy"]
+normal = Vector2(1, 0)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_2wwo0"]
+normal = Vector2(-1, 0)
+
+[node name="test_level" type="Node2D"]
+
+[node name="p1_boundary_ceiling" type="StaticBody2D" parent="."]
+collision_layer = 2
+collision_mask = 0
+
+[node name="ceiling" type="CollisionShape2D" parent="p1_boundary_ceiling"]
+position = Vector2(0, 40)
+shape = SubResource("WorldBoundaryShape2D_1wl7y")
+
+[node name="p2_boundary" type="StaticBody2D" parent="."]
+collision_layer = 6
+collision_mask = 0
+
+[node name="floor" type="CollisionShape2D" parent="p2_boundary"]
+position = Vector2(0, 360)
+shape = SubResource("WorldBoundaryShape2D_riapw")
+
+[node name="wall_left" type="CollisionShape2D" parent="p2_boundary"]
+shape = SubResource("WorldBoundaryShape2D_b14gy")
+
+[node name="wall_right" type="CollisionShape2D" parent="p2_boundary"]
+position = Vector2(640, 0)
+shape = SubResource("WorldBoundaryShape2D_2wwo0")
+
+[node name="pawn_digger" parent="." instance=ExtResource("1_hqru8")]
+position = Vector2(100, 119)
+
+[node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
+position = Vector2(99, 65)
+
+[node name="tile_map" type="TileMap" parent="."]
+format = 2
+
+[node name="destructible_terrain" type="AnimatableBody2D" parent="."]
+collision_layer = 6
+collision_mask = 0
+script = ExtResource("3_m02dc")
+bitmap = ExtResource("4_767te")
+epsilon = 4.0

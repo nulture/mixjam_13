@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://prb2lt1jxqms"]
+
+[ext_resource type="PackedScene" uid="uid://4ob7ckqiacwi" path="res://scenes/pawn/pawn_base.tscn" id="1_6ycld"]
+[ext_resource type="Script" path="res://scripts/pawn/pawn_brusher.gd" id="1_t2ujd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aalfp"]
+size = Vector2(24, 48)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_f7cgy"]
+size = Vector2(24, 48)
+
+[node name="pawn" instance=ExtResource("1_6ycld")]
+collision_layer = 8
+collision_mask = 13
+script = ExtResource("1_t2ujd")
+speed_x = 50.0
+friction_x = 0.5
+jump_y = 400.0
+
+[node name="shape" parent="." index="0"]
+shape = SubResource("RectangleShape2D_aalfp")
+
+[node name="sprite_placeholder" parent="." index="1"]
+texture = SubResource("PlaceholderTexture2D_f7cgy")
