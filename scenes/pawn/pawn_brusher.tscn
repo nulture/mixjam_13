@@ -1,13 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://prb2lt1jxqms"]
+[gd_scene load_steps=7 format=3 uid="uid://prb2lt1jxqms"]
 
 [ext_resource type="PackedScene" uid="uid://4ob7ckqiacwi" path="res://scenes/pawn/pawn_base.tscn" id="1_6ycld"]
 [ext_resource type="Script" path="res://scripts/pawn/pawn_brusher.gd" id="1_t2ujd"]
+[ext_resource type="Script" path="res://scenes/pawn/brush_area.gd" id="3_mvq0x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aalfp"]
 size = Vector2(24, 48)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_f7cgy"]
 size = Vector2(24, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gfndy"]
+size = Vector2(64, 64)
 
 [node name="pawn" instance=ExtResource("1_6ycld")]
 collision_layer = 8
@@ -22,3 +26,14 @@ shape = SubResource("RectangleShape2D_aalfp")
 
 [node name="sprite_placeholder" parent="." index="1"]
 texture = SubResource("PlaceholderTexture2D_f7cgy")
+
+[node name="brush_area" type="Area2D" parent="." index="2"]
+collision_layer = 0
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("3_mvq0x")
+
+[node name="shape" type="CollisionShape2D" parent="brush_area" index="0"]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_gfndy")
