@@ -11,6 +11,7 @@ static var is_fullscreen : bool :
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 func _ready() -> void :
+	randomize()
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	pass
 	

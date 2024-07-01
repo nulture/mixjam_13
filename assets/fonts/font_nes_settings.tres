@@ -1,0 +1,9 @@
+[gd_resource type="LabelSettings" load_steps=2 format=3 uid="uid://bdojf6uy0sh31"]
+
+[ext_resource type="FontFile" uid="uid://bca2q32bjnm3o" path="res://assets/fonts/font_nes.ttf" id="1_wdqsj"]
+
+[resource]
+font = ExtResource("1_wdqsj")
+font_size = 7
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
