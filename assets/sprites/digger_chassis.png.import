@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://dpgcl5223u27q"
+path="res://.godot/imported/digger_chassis.png-0fa5ca8599f4cd571082c4d440e7f9e2.image"
+
+[deps]
+
+source_file="res://assets/sprites/digger_chassis.png"
+dest_files=["res://.godot/imported/digger_chassis.png-0fa5ca8599f4cd571082c4d440e7f9e2.image"]
+
+[params]
+

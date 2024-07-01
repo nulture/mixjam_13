@@ -5,21 +5,18 @@ class_name DestructibleSprite extends Sprite2D
 ## If the percentage of original pixels is less below this value, the fossil is unusable.
 @export_range(0.0, 1.0) var destroy_threshold = 0.5
 
-@onready var image_texture = texture as ImageTexture
-@onready var image = texture.get_image()
-@onready var original_pixels = get_opaque_pixels()
+var original_pixels : int
+
+var image : Image
 
 var global_rect : Rect2i :
 	get : return Rect2i(Vector2i(global_position + get_rect().position), get_rect().size)
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	# Texture must be duplicated per instance, so separated instances may be modified independently
+	texture = texture.duplicate(true)
+	image = texture.get_image()
+	original_pixels = get_opaque_pixels()
 
 
 func get_remaining_percent() -> float :
@@ -28,15 +25,20 @@ func get_remaining_percent() -> float :
 
 func get_opaque_pixels() -> int :
 	var result : int = 0
-	for ix in self.get_rect().size.x :
-		for iy in self.get_rect().size.y :
+	for ix : int in get_rect().size.x :
+		for iy : int in get_rect().size.y :
 			if image.get_pixel(ix, iy).a > 0.5 :
 				result += 1
 	return result
 
 
+func texture_image_clone() -> Image :
+	var img = texture.get_image()
+	return Image.create_from_data(img.get_width(), img.get_height(), false, img.get_format(), img.get_data())
+
+
 func refresh_texture() -> void :
-	image_texture.set_image(image)
+	texture.set_image(image)
 
 
 func destroy_rect(rect : Rect2i) -> void :

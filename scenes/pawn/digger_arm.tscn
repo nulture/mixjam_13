@@ -38,7 +38,6 @@ script = ExtResource("1_kpfxr")
 affects_destructibles = false
 
 [node name="unsafe_laser" type="CollisionShape2D" parent="laserbeam/area"]
-position = Vector2(5, 0)
 shape = SubResource("CircleShape2D_xq3d7")
 script = ExtResource("1_kpfxr")
 

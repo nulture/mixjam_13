@@ -1,0 +1,14 @@
+[remap]
+
+importer="image"
+type="Image"
+uid="uid://coo03112a31fh"
+path="res://.godot/imported/cleaner_chassis.png-f9ca2f0018e1ad1b4254eac2baf4cb2e.image"
+
+[deps]
+
+source_file="res://assets/sprites/cleaner_chassis.png"
+dest_files=["res://.godot/imported/cleaner_chassis.png-f9ca2f0018e1ad1b4254eac2baf4cb2e.image"]
+
+[params]
+

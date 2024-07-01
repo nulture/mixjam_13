@@ -7,6 +7,7 @@ const HALF_PI := PI * 0.5
 @export var friction : Vector2 = Vector2.ONE
 
 @export var aim_speed : float = 1.0
+@export var laser_pushback : Vector2
 
 @onready var digger_arm : Node2D = $digger_arm
 
@@ -25,6 +26,8 @@ func _physics_process(delta: float) -> void:
 		if vector.y > 0 :
 			vector.y += speed_down_add
 		velocity += vector
+	
+	
 	
 	super._physics_process(delta)
 	
