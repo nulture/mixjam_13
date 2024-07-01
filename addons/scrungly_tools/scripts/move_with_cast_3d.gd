@@ -29,3 +29,5 @@ func _process(delta: float) -> void :
 	elif is_shapecast_parent :
 		if shapecast_parent.is_colliding() :
 			position = lerp(Vector3.ZERO, shapecast_parent.target_position, shapecast_parent.get_closest_collision_safe_fraction())
+		else :
+			position = shapecast_parent.target_position

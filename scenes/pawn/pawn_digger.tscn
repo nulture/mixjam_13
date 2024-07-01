@@ -1,15 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxgwl1et1p84x"]
+[gd_scene load_steps=6 format=3 uid="uid://bxgwl1et1p84x"]
 
 [ext_resource type="Script" path="res://scripts/pawn/pawn_digger.gd" id="1_ejaju"]
 [ext_resource type="PackedScene" uid="uid://4ob7ckqiacwi" path="res://scenes/pawn/pawn_base.tscn" id="1_wvhoa"]
+[ext_resource type="PackedScene" uid="uid://buod8ni7x5mbc" path="res://scenes/pawn/digger_arm.tscn" id="3_8yjf6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aq7kw"]
-size = Vector2(96, 56)
+size = Vector2(95, 55)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_roilx"]
 size = Vector2(96, 56)
 
-[node name="pawn" instance=ExtResource("1_wvhoa")]
+[node name="pawn_digger" instance=ExtResource("1_wvhoa")]
 collision_layer = 8
 motion_mode = 1
 script = ExtResource("1_ejaju")
@@ -18,7 +19,10 @@ speed_down_add = 6.0
 friction = Vector2(0.05, 0.05)
 
 [node name="shape" parent="." index="0"]
+position = Vector2(-0.5, -0.5)
 shape = SubResource("RectangleShape2D_aq7kw")
 
 [node name="sprite_placeholder" parent="." index="1"]
 texture = SubResource("PlaceholderTexture2D_roilx")
+
+[node name="digger_arm" parent="." index="2" instance=ExtResource("3_8yjf6")]

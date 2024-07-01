@@ -1,0 +1,6 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bo2lmhcwlujaq"]
+
+[ext_resource type="Shader" uid="uid://bkwxr1il4xi3q" path="res://scripts/shaders/bitmap_mask.tres" id="1_cnhbc"]
+
+[resource]
+shader = ExtResource("1_cnhbc")

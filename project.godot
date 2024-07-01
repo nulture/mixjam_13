@@ -46,6 +46,10 @@ folder_colors={
 "res://scripts/": "blue"
 }
 
+[importer_defaults]
+
+image={}
+
 [input]
 
 system_quit={
@@ -128,7 +132,7 @@ p2_secondary={
 
 [layer_names]
 
-2d_physics/layer_1="default"
+2d_physics/layer_1="terrain"
 2d_physics/layer_2="block_digger"
 2d_physics/layer_3="block_brusher"
 2d_physics/layer_4="pawn"
