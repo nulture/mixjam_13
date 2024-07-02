@@ -18,6 +18,12 @@ var rect : Rect2i:
 var image_rect : Rect2i:
 	get: return Rect2i(Vector2i.ZERO, get_rect().size)
 
+var smart_offset : Vector2i:
+	get:
+		if centered :
+			return offset - get_rect().size * 0.5
+		return offset
+
 func _init(_image: Image = null) -> void:
 	# Texture must be duplicated per instance, so separated instances may be modified independently
 	if texture == null : texture = ImageTexture.new()
@@ -48,7 +54,7 @@ func refresh_texture() -> void :
 
 func set_pixels_rect(_rect: Rect2i, value: bool) :
 	var sect = global_rect.intersection(_rect)
-	var local = sect.position - Vector2i(global_position)
+	var local = sect.position - Vector2i(global_position) - smart_offset
 	var ip := Vector2i.ZERO
 	for ix in sect.size.x :
 		ip.x = local.x + ix
@@ -59,7 +65,7 @@ func set_pixels_rect(_rect: Rect2i, value: bool) :
 
 func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
 	var sect = rect.intersection(DestructibleSprite.rect_from_circle(origin, radius))
-	var local = sect.position - Vector2i(global_position)
+	var local = sect.position - Vector2i(global_position) - smart_offset
 	var ip := Vector2i.ZERO
 	for ix in sect.size.x :
 		ip.x = local.x + ix

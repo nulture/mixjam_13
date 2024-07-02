@@ -31,7 +31,7 @@ func _ready() -> void:
 
 func _exit_tree() -> void:
 	thread.wait_to_finish()
-	
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:

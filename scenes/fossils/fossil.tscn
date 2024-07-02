@@ -18,6 +18,7 @@ image = SubResource("Image_8s862")
 
 [node name="nautilus" type="Sprite2D"]
 texture = SubResource("ImageTexture_nmbt2")
+centered = false
 script = ExtResource("1_ifq7a")
 collect_threshold = 0.025
 destroy_threshold = 0.8

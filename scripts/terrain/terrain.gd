@@ -1,4 +1,4 @@
-class_name Terrain extends Sprite2D
+class_name Terrain extends Node2D
 
 @export var crust_texture : Texture2D
 @export var fossil_root : Node2D
@@ -14,11 +14,15 @@ static var inst : Terrain
 
 func _ready() -> void:
 	inst = self
+
+	register_destructibles()
 	create_chunks_from_texture()
 	
+	if self.texture != null :
+		self.texture = null
+
 	if Engine.is_editor_hint() : return
 	
-	# register_fossils()
 
 func create_chunks_from_texture() -> void :
 	chunk_grid_size = Vector2i(
@@ -28,7 +32,6 @@ func create_chunks_from_texture() -> void :
 		for iy in chunk_grid_size.y :
 			var ip = Vector2i(ix, iy)
 			create_chunk(ip)
-	texture = null
 
 func create_chunk(coord: Vector2i) :
 	var data = PackedByteArray()
@@ -68,24 +71,12 @@ func get_intersecting_chunks(rect: Rect2i) -> Array[CrustChunk] :
 func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -> void :
 	for i in get_intersecting_chunks(rect) :
 		i.set_pixels_rect(rect, value)
-
-	# var size = Vector2i(crust_bitmap.get_size().x, crust_bitmap.get_size().y)
-	# var ip := Vector2i.ZERO
-	# for ix in rect.size.x :
-	# 	ip.x = rect.position.x + ix
-	# 	if ip.x < 0 || ip.x >= size.x : continue
-	# 	for iy in rect.size.y :
-	# 		ip.y = rect.position.y + iy
-	# 		if ip.y < 0 || ip.y >= size.y : continue
-	# 		crust_bitmap.set_bitv(ip, value)
 	
-	# if !value && affect_destructibles :
-	# 	for i in destructibles :
-	# 		if rect.intersects(i.global_rect) : 
-	# 			i.destroy_rect(rect)
+	if !value && affect_destructibles :
+		for i in destructibles :
+			if rect.intersects(i.global_rect) : 
+				i.set_pixels_rect(rect, value)
 	
-	# crust_body.refresh()
-	# refresh_image_area(rect)
 	# collect_destructibles(rect)
 	
 # func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : bool, value : bool) -> void :
@@ -116,10 +107,10 @@ func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -
 
 
 
-# func register_fossils() -> void :
-# 	destructibles.clear()
-# 	for i in fossil_root.find_children("*", "DestructibleSprite") :
-# 		destructibles.append(i)
+func register_destructibles() -> void :
+	destructibles.clear()
+	for i in fossil_root.find_children("*", "DestructibleSprite") :
+		destructibles.append(i)
 		
 # static func set_pixels_sprite(bitmap : BitMap, sprite : Sprite2D, value : bool) -> void :
 # 	var local_rect_position = Vector2i(sprite.get_rect().position)
