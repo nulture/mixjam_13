@@ -43,8 +43,15 @@ func _process(delta: float) -> void:
 	pass
 
 func refresh_texture() -> void:
-	if thread.is_started() : return
-	thread.start(calculate_polygons)
+	# if thread.is_started() : return
+	# thread.start(calculate_polygons)
+	calculate_polygons.call_deferred()
+	refresh_polygons.call_deferred()
+
+
+func calculate_polygons() -> void:
+	polys = bitmap.opaque_to_polygons(Rect2i(Vector2i.ZERO, get_rect().size), epsilon)
+	ready_to_update_polygons = true
 
 func refresh_polygons() -> void:
 	super.refresh_texture()
@@ -55,10 +62,6 @@ func refresh_polygons() -> void:
 		var collision_polygon = CollisionPolygon2D.new()
 		collision_polygon.polygon = i
 		body.add_child(collision_polygon)
-
-func calculate_polygons() -> void:
-	polys = bitmap.opaque_to_polygons(Rect2i(Vector2i.ZERO, get_rect().size), epsilon)
-	ready_to_update_polygons = true
 
 func set_pixelv(xy: Vector2i, value: bool) -> void:
 	bitmap.set_bitv(xy, value)
