@@ -1,41 +1,74 @@
-@tool class_name Terrain extends Node2D
+class_name Terrain extends Sprite2D
 
 @export var refresh_button : bool :
-	get : return false
-	set (value) : 
-		refresh_crust()
-		
+	get: return false
+	set (value):
+		# refresh_crust()
+		pass
+
+@export var chunk_size : Vector2i = Vector2i.ONE * 256
+@export var chunk_epsilon : float = 2.0
+
+@export var crust_texture : Texture2D
 @export var crust_bitmap : BitMap
 @export var fossil_root : Node2D
 
-@onready var crust_body : CrustBody = $crust_body
-@onready var crust_map : Sprite2D = $crust_map
-@onready var texture := ImageTexture.new()
+var chunks : Dictionary
+var chunk_grid_size : Vector2i
 
-var crust_image : Image
+@onready var crust_image := crust_texture.get_image()
 
 var destructibles : Array[DestructibleSprite]
 
 static var inst : Terrain
 
 func _ready() -> void:
-	crust_map.texture = texture
 	inst = self
-	refresh_crust()
+	# crust_image = texture.get_image()
+	create_chunks_from_texture()
 	
 	if Engine.is_editor_hint() : return
 	
 	register_fossils()
+
+func create_chunks_from_texture() -> void :
+	chunk_grid_size = Vector2i(
+		ceili(float(crust_image.get_width()) / chunk_size.x),
+		ceili(float(crust_image.get_height()) / chunk_size.y))
+	for ix in chunk_grid_size.x :
+		for iy in chunk_grid_size.y :
+			var ip = Vector2i(ix, iy)
+			create_chunk(ip)
+	texture = null
+
+func create_chunk(coord: Vector2i) :
+	var bitmap = BitMap.new()
+	bitmap.resize(chunk_size)
+
+	var data = PackedByteArray()
+	data.resize(chunk_size.x * chunk_size.y * 4)
+	var subimage := Image.create_from_data(chunk_size.x, chunk_size.y, false, crust_image.get_format(), data)
+	subimage.blit_rect(crust_image, Rect2i(chunk_size * coord, chunk_size), Vector2i.ZERO)
 	
-func refresh_crust() -> void :
-	crust_body.refresh()
-	refresh_image()
+	var ip := Vector2i.ZERO
+	for ix in chunk_size.x :
+		ip.x = coord.x * chunk_size.x + ix
+		for iy in chunk_size.y :
+			ip.y = coord.y * chunk_size.y + iy
+			if ip.x >= crust_image.get_width() || ip.y >= crust_image.get_height() : continue
+			bitmap.set_bit(ix, iy, crust_image.get_pixelv(ip).a > 0.1)
 
-func refresh_image() -> void :
-	crust_image = crust_bitmap.convert_to_image()
-	crust_image.convert(Image.FORMAT_RGBA8)
+	var node := CrustChunk.new()
+	chunks[coord] = node
+	
+	node.init(self, coord, bitmap, subimage)
+	add_child(node)
 
-	refresh_image_area(Rect2i(Vector2i.ZERO, crust_image.get_size()))
+# func refresh_image() -> void :
+# 	crust_image = crust_bitmap.convert_to_image()
+# 	crust_image.convert(Image.FORMAT_RGBA8)
+
+# 	refresh_image_area(Rect2i(Vector2i.ZERO, crust_image.get_size()))
 	
 func refresh_image_area(rect : Rect2i) -> void :
 	var pos := Vector2i.ZERO
@@ -48,8 +81,8 @@ func refresh_image_area(rect : Rect2i) -> void :
 			
 			if crust_bitmap.get_bitv(pos) : continue
 			crust_image.set_pixelv(pos, Color(0, 0, 0, 0))
-	texture.set_image(crust_image)
-	
+	# texture.set_image(crust_image)
+
 func register_fossils() -> void :
 	destructibles.clear()
 	for i in fossil_root.find_children("*", "DestructibleSprite") :
@@ -99,16 +132,52 @@ func collect_destructibles(rect: Rect2i) -> void :
 		if Terrain.get_sprite_overlap_percentage(crust_bitmap, i) > i.collect_threshold : continue
 		
 		i.collect()
+
+func position_to_coord(vector: Vector2) -> Vector2i :
+	return floor(vector / Vector2(chunk_size))
+
+func coord_inside_grid(coord: Vector2i) -> bool:
+	return coord.x >= 0 && coord.x < chunk_grid_size.x && coord.y >= 0 && coord.y < chunk_grid_size.y
+
+func get_intersecting_chunks(rect: Rect2i) -> Array[CrustChunk] :
+	var result : Array[CrustChunk] = []
+	
+	var ul = position_to_coord(rect.position)
+	var ur = position_to_coord(rect.position + Vector2i.RIGHT * rect.size.x)
+	var dl = position_to_coord(rect.position + Vector2i.DOWN * rect.size.y)
+	var dr = position_to_coord(rect.position + rect.size)
+
+	if coord_inside_grid(ul) :
+		result.append(chunks[ul])
+	if coord_inside_grid(ur) && !result.has(chunks[ur]) :
+		result.append(chunks[ur])
+	if coord_inside_grid(dl) && !result.has(chunks[dl])  :
+		result.append(chunks[dl])
+	if coord_inside_grid(dr) && !result.has(chunks[dr]) :
+		result.append(chunks[dr])
+
+	return result
 	
 func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -> void :
-	crust_bitmap.set_bit_rect(rect, value)
+	for i in get_intersecting_chunks(rect) :
+		i.set_pixels_rect(rect, value)
+
+	# var size = Vector2i(crust_bitmap.get_size().x, crust_bitmap.get_size().y)
+	# var ip := Vector2i.ZERO
+	# for ix in rect.size.x :
+	# 	ip.x = rect.position.x + ix
+	# 	if ip.x < 0 || ip.x >= size.x : continue
+	# 	for iy in rect.size.y :
+	# 		ip.y = rect.position.y + iy
+	# 		if ip.y < 0 || ip.y >= size.y : continue
+	# 		crust_bitmap.set_bitv(ip, value)
 	
 	if !value && affect_destructibles :
 		for i in destructibles :
 			if rect.intersects(i.global_rect) : 
 				i.destroy_rect(rect)
 	
-	crust_body.refresh()
+	# crust_body.refresh()
 	refresh_image_area(rect)
 	collect_destructibles(rect)
 	
@@ -132,7 +201,7 @@ func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : 
 			if rect.intersects(i.global_rect) :
 				i.destroy_circle(origin, radius)
 	
-	crust_body.refresh()
+	# crust_body.refresh()
 	refresh_image_area(rect)
 	collect_destructibles(rect)
 	pass

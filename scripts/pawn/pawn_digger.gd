@@ -9,7 +9,8 @@ const HALF_PI := PI * 0.5
 @export var aim_speed : float = 1.0
 @export var laser_pushback : Vector2
 
-@onready var digger_arm : Node2D = $digger_arm
+# @onready var digger_arm : Node2D = $digger_arm
+@onready var digger_arm : Node2D = null
 
 var in_aiming_mode : bool
 var input_vector : Vector2 :
