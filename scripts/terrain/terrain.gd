@@ -79,32 +79,17 @@ func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -
 	
 	# collect_destructibles(rect)
 	
-# func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : bool, value : bool) -> void :
-# 	var rect = DestructibleSprite.rect_from_circle(origin, radius)
-# 	var ip := Vector2i.ZERO
-# 	for ix in rect.size.x :
-# 		ip.x = rect.position.x + ix
-# 		if ip.x < 0 || ip.x >= crust_image.get_width() : continue
-# 		for iy in rect.size.y :
-# 			ip.y = rect.position.y + iy
-# 			if ip.y < 0 || ip.y >= crust_image.get_height() : continue
-			
-# 			var dist = (Vector2(ip) - origin).length()
-# 			if dist > radius : continue
-			
-# 			crust_bitmap.set_bitv(ip, value)
-			
-# 	if !value && affect_destructibles :
-# 		for i in destructibles :
-# 			if rect.intersects(i.global_rect) :
-# 				i.destroy_circle(origin, radius)
+func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : bool, value : bool) -> void :
+	var rect = DestructibleSprite.rect_from_circle(origin, radius)
+	for i in get_intersecting_chunks(rect) :
+		i.set_pixels_circle(origin, radius, value)
 	
-# 	# crust_body.refresh()
-# 	refresh_image_area(rect)
-# 	collect_destructibles(rect)
-# 	pass
-
-
+	if !value && affect_destructibles :
+		for i in destructibles :
+			if rect.intersects(i.global_rect) : 
+				i.set_pixels_circle(origin, radius, value)
+	
+	# collect_destructibles(rect)
 
 
 func register_destructibles() -> void :

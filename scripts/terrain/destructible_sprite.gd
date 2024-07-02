@@ -64,13 +64,16 @@ func set_pixels_rect(_rect: Rect2i, value: bool) :
 	refresh_texture()
 
 func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
-	var sect = rect.intersection(DestructibleSprite.rect_from_circle(origin, radius))
+	var origin_local = Vector2i(origin) - global_rect.position
+	var sect = global_rect.intersection(DestructibleSprite.rect_from_circle(origin, radius))
 	var local = sect.position - Vector2i(global_position) - smart_offset
 	var ip := Vector2i.ZERO
 	for ix in sect.size.x :
 		ip.x = local.x + ix
 		for iy in sect.size.y :
 			ip.y = local.y + iy
+			var dist = (ip - origin_local).length()
+			if dist > radius : continue
 			set_pixelv(ip, value)
 	refresh_texture()
 
@@ -79,23 +82,6 @@ func set_pixelv(xy: Vector2i, value: bool) -> void:
 	if value : color.a = 1
 	else : color.a = 0
 	image.set_pixelv(xy, color)
-
-
-# func destroy_circle(origin : Vector2, radius : float) -> void :
-# 	var origin_local = origin - Vector2(global_rect.position)
-# 	var rect = DestructibleSprite.rect_from_circle(origin, radius)
-# 	var intersection = rect.intersection(global_rect)
-# 	intersection.position -= global_rect.position
-# 	for ix in intersection.size.x :
-# 		for iy in intersection.size.y :
-# 			var ip = Vector2i(ix, iy) + intersection.position
-# 			var dist = (Vector2(ip) - origin_local).length()
-# 			if dist > radius : continue
-# 			image.set_pixelv(ip, Color(0,0,0,0))
-			
-# 	refresh_texture()
-# 	# check_destroy()
-
 
 # func collect() -> void :
 # 	print("Collected! (%2.0f percent remaining)" % (get_remaining_percent() * 100))

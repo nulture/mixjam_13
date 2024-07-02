@@ -66,6 +66,7 @@ fossil_root = NodePath("fossil_map/fossil_collection")
 [node name="nautilus" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(381, 78)
 centered = true
+collision_layer = 7
 
 [node name="nautilus_2" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(289, 286)

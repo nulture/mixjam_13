@@ -14,15 +14,17 @@ func _init(_image: Image = null) -> void:
 	super._init(_image)
 	bitmap = BitMap.new()
 
-	if image == null : return
-	bitmap.create_from_image_alpha(_image)
+	if texture.get_image() == null : return
+	bitmap.create_from_image_alpha(texture.get_image())
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
 
+
 	thread = Thread.new()
 	body = StaticBody2D.new()
+	body.position = smart_offset
 	body.collision_layer = collision_layer
 	add_child(body)
 
