@@ -24,7 +24,7 @@ func _process(delta: float) -> void:
 
 func spawn() -> void :
 	var animated_sprite = AnimatedSprite2D.new()
-	animated_sprite.position = Utils.random_point_in_unit_circle() * spawn_radius
+	animated_sprite.position = position + Utils.random_point_in_unit_circle() * spawn_radius
 	animated_sprite.sprite_frames = sprite_frames
 	animated_sprite.play(random_animation)
 	

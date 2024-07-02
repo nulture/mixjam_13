@@ -6,10 +6,12 @@ class_name PawnBrusher extends Pawn
 @export var jump_count : int = 1
 @export var jump_y : float = 1.0
 
+@onready var brusher_area : Area2D = $brush_area
+
 static var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var _grounded : bool
-var grounded : bool : 
+var grounded : bool :
 	get : return _grounded
 	set (value) :
 		if _grounded == value : return
@@ -32,10 +34,10 @@ func _physics_process(delta: float) -> void :
 	
 	if not grounded :
 		velocity.y += gravity * delta
-	
 	velocity.x -= velocity.x * friction_x
-	velocity.x += Input.get_axis("p2_move_left", "p2_move_right") * speed_x
-		
+	if not brusher_area.charging :
+		velocity.x += Input.get_axis("p2_move_left", "p2_move_right") * speed_x
+	
 	super._physics_process(delta)
 
 func _process(delta: float) -> void:
@@ -46,7 +48,11 @@ func _input(event: InputEvent) -> void:
 		jump()
 		
 func jump() -> void :
-	if jumps_left <= 0 : return
+	if jumps_left <= 0 || brusher_area.charging : return
 	jumps_left -= 1
 	
 	velocity.y = -jump_y
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	pass # Replace with function body.
