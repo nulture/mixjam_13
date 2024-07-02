@@ -10,81 +10,104 @@ var original_pixels : int
 var image : Image
 
 var global_rect : Rect2i :
-	get : return Rect2i(Vector2i(global_position + get_rect().position), get_rect().size)
+	get: return Rect2i(Vector2i(global_position + get_rect().position), get_rect().size)
 
-func _ready() -> void:
+var rect : Rect2i:
+	get: return get_rect()
+
+var image_rect : Rect2i:
+	get: return Rect2i(Vector2i.ZERO, get_rect().size)
+
+func _init(_image: Image = null) -> void:
 	# Texture must be duplicated per instance, so separated instances may be modified independently
-	texture = texture.duplicate(true)
-	image = texture.get_image()
+	if texture == null : texture = ImageTexture.new()
+	else : texture = texture.duplicate(true)
+
+	if _image == null : _image = self.texture.get_image()
+	image = _image
+	texture.set_image(image)
+
 	original_pixels = get_opaque_pixels()
 
+func _ready() -> void:
+	pass
 
 func get_remaining_percent() -> float :
 	return float(get_opaque_pixels()) / original_pixels
-	
 
 func get_opaque_pixels() -> int :
 	var result : int = 0
-	for ix : int in get_rect().size.x :
-		for iy : int in get_rect().size.y :
+	for ix in rect.size.x :
+		for iy in rect.size.y :
 			if image.get_pixel(ix, iy).a > 0.5 :
 				result += 1
 	return result
 
-
-func texture_image_clone() -> Image :
-	var img = texture.get_image()
-	return Image.create_from_data(img.get_width(), img.get_height(), false, img.get_format(), img.get_data())
-
-
 func refresh_texture() -> void :
 	texture.set_image(image)
 
-
-func destroy_rect(rect : Rect2i) -> void :
-	var intersection = rect.intersection(global_rect)
-	intersection.position -= global_rect.position
-	for ix in intersection.size.x :
-		for iy in intersection.size.y :
-			var ip = Vector2i(ix, iy) + intersection.position
-			image.set_pixelv(ip, Color(0,0,0,0))
+func set_pixels_rect(_rect: Rect2i, value: bool) :
+	var sect = global_rect.intersection(_rect)
+	var local = sect.position - Vector2i(global_position)
+	var ip := Vector2i.ZERO
+	for ix in sect.size.x :
+		ip.x = local.x + ix
+		for iy in sect.size.y :
+			ip.y = local.y + iy
+			set_pixelv(ip, value)
 	refresh_texture()
-	check_destroy()
+
+func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
+	var sect = rect.intersection(DestructibleSprite.rect_from_circle(origin, radius))
+	var local = sect.position - Vector2i(global_position)
+	var ip := Vector2i.ZERO
+	for ix in sect.size.x :
+		ip.x = local.x + ix
+		for iy in sect.size.y :
+			ip.y = local.y + iy
+			set_pixelv(ip, value)
+	refresh_texture()
+
+func set_pixelv(xy: Vector2i, value: bool) -> void:
+	var color := image.get_pixelv(xy)
+	if value : color.a = 1
+	else : color.a = 0
+	image.set_pixelv(xy, color)
 
 
-func destroy_circle(origin : Vector2, radius : float) -> void :
-	var origin_local = origin - Vector2(global_rect.position)
-	var rect = DestructibleSprite.rect_from_circle(origin, radius)
-	var intersection = rect.intersection(global_rect)
-	intersection.position -= global_rect.position
-	for ix in intersection.size.x :
-		for iy in intersection.size.y :
-			var ip = Vector2i(ix, iy) + intersection.position
-			var dist = (Vector2(ip) - origin_local).length()
-			if dist > radius : continue
-			image.set_pixelv(ip, Color(0,0,0,0))
+# func destroy_circle(origin : Vector2, radius : float) -> void :
+# 	var origin_local = origin - Vector2(global_rect.position)
+# 	var rect = DestructibleSprite.rect_from_circle(origin, radius)
+# 	var intersection = rect.intersection(global_rect)
+# 	intersection.position -= global_rect.position
+# 	for ix in intersection.size.x :
+# 		for iy in intersection.size.y :
+# 			var ip = Vector2i(ix, iy) + intersection.position
+# 			var dist = (Vector2(ip) - origin_local).length()
+# 			if dist > radius : continue
+# 			image.set_pixelv(ip, Color(0,0,0,0))
 			
-	refresh_texture()
-	check_destroy()
+# 	refresh_texture()
+# 	# check_destroy()
 
 
-func collect() -> void :
-	print("Collected! (%2.0f percent remaining)" % (get_remaining_percent() * 100))
-	Terrain.inst.destructibles.erase(self)
-	queue_free()
+# func collect() -> void :
+# 	print("Collected! (%2.0f percent remaining)" % (get_remaining_percent() * 100))
+# 	Terrain.inst.destructibles.erase(self)
+# 	queue_free()
 
 
-func check_destroy() -> bool:
-	if get_remaining_percent() < destroy_threshold :
-		destroy()
-		return true
-	return false
+# func check_destroy() -> bool:
+# 	if get_remaining_percent() < destroy_threshold :
+# 		destroy()
+# 		return true
+# 	return false
 
 
-func destroy() -> void :
-	print("Destroyed!")
-	Terrain.inst.destructibles.erase(self)
-	queue_free()
+# func destroy() -> void :
+# 	print("Destroyed!")
+# 	Terrain.inst.destructibles.erase(self)
+# 	queue_free()
 
 
 static func rect_from_circle(origin : Vector2i, radius : float) -> Rect2i :
