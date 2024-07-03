@@ -61,30 +61,20 @@ func _input(event: InputEvent) -> void:
 		charging = false
 
 func destroy_stuff() -> void :
-	
-	Terrain.inst.set_pixels_rect(get_rect_world(safe_rect), false, false)
-	Terrain.inst.set_pixels_rect(get_rect_world(unsafe_rect), true, false)
+	var input_vector = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
 
-	# var input_vector = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
-
-	# if input_vector.length_squared() == 0 : return
-	# if abs(input_vector.x) >= abs(input_vector.y) :
-	# 	if input_vector.x > 0 :
-	# 		destroy_direction(safe_rect_right, unsafe_rect_right)
-	# 	else :
-	# 		destroy_direction(safe_rect_left, unsafe_rect_left)
-	# else :
-	# 	if input_vector.y > 0 :
-	# 		destroy_direction(safe_rect_down, unsafe_rect_down)
-	# 	else :
-	# 		pass
+	if input_vector.length_squared() == 0 : return
+	if abs(input_vector.x) >= abs(input_vector.y) :
+		if input_vector.x > 0 :
+			destroy_direction(safe_rect_right, unsafe_rect_right)
+		else :
+			destroy_direction(safe_rect_left, unsafe_rect_left)
+	else :
+		if input_vector.y > 0 :
+			destroy_direction(safe_rect_down, unsafe_rect_down)
+		else :
+			pass
 
 func destroy_direction(safe: CollisionShape2D, unsafe: CollisionShape2D) :
-	# for i in unsafe_rects :
-	# 	Terrain.inst.set_pixels_rect(get_rect_world(i), true, false)
-	# for i in safe_rects :
-	# 	Terrain.inst.set_pixels_rect(get_rect_world(i), false, false)
-
-	# Terrain.inst.set_pixels_rect(get_rect_world(unsafe_rect), true, false)
 	Terrain.inst.set_pixels_rect(get_rect_world(unsafe), true, false)
 	Terrain.inst.set_pixels_rect(get_rect_world(safe), false, false)

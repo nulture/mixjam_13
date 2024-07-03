@@ -48,8 +48,8 @@ func _process(delta: float) -> void:
 func refresh_texture() -> void:
 	# if thread.is_started() : return
 	# thread.start(calculate_polygons)
-	calculate_polygons.call_deferred()
-	refresh_polygons.call_deferred()
+	calculate_polygons()
+	refresh_polygons()
 
 
 func calculate_polygons() -> void:

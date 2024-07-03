@@ -6,6 +6,6 @@ class_name Collectible extends Node
 @onready var destructible : DestructibleSprite = $".."
 
 func collect() -> void :
-	print("Collected! (%2.0f percent remaining)" % (destructible.get_remaining_percent() * 100))
+	print("Collected! (%2.0f percent of pixels remaining)" % (destructible.get_remaining_percent() * 100))
 	destructible.queue_free()
 

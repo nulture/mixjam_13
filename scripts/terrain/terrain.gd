@@ -42,6 +42,7 @@ func create_chunk(coord: Vector2i) :
 	var node := CrustChunk.new(subimage, coord)
 	chunks[coord] = node
 	add_child(node)
+	move_child(node, 0)
 
 func position_to_coord(vector: Vector2) -> Vector2i :
 	return floor(vector / Vector2(CrustChunk.chunk_size))
@@ -77,7 +78,7 @@ func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -
 		for i in destructibles :
 			if rect.intersects(i.global_rect) :
 				if affect_destructibles :
-					i.set_pixels_rect(i.global_rect, value)
+					i.set_pixels_rect(rect, value)
 				collectibles.append(i)
 		check_collectibles(collectibles)
 	
@@ -99,44 +100,7 @@ func register_destructibles() -> void :
 	destructibles.clear()
 	for i in fossil_root.find_children("*", "DestructibleSprite") :
 		destructibles.append(i)
-		
-# static func set_pixels_sprite(bitmap : BitMap, sprite : Sprite2D, value : bool) -> void :
-# 	var local_rect_position = Vector2i(sprite.get_rect().position)
-# 	var rect = Rect2i(Vector2i(sprite.global_position) + local_rect_position, sprite.get_rect().size)
-# 	var pos := Vector2i.ZERO
-# 	for ix in rect.size.x :
-# 		pos.x = rect.position.x + ix
-# 		if pos.x < 0 || pos.x >= bitmap.get_size().x : continue
-# 		for iy in rect.size.y :
-# 			pos.y = rect.position.y + iy
-# 			if pos.y < 0 || pos.y >= bitmap.get_size().y : continue
-# 			var local = local_rect_position + Vector2i(ix, iy)
-			
-# 			bitmap.set_bitv(pos, sprite.is_pixel_opaque(local))
-# 	pass
-	
-# static func is_sprite_overlapping_bitmap(bitmap: BitMap, sprite: Sprite2D) -> bool :
-# 	return get_sprite_overlap_percentage(bitmap, sprite) > 0.0
-	
-# static func get_sprite_overlap_percentage(bitmap: BitMap, sprite: Sprite2D) -> float :
-# 	var overlap_pixels : float = 0.0
-# 	var total_pixels : float = 0.0
-	
-# 	var local_rect_position = Vector2i(sprite.get_rect().position)
-# 	var rect = Rect2i(Vector2i(sprite.global_position) + local_rect_position, sprite.get_rect().size)
-# 	var pos := Vector2i.ZERO
-# 	for ix in rect.size.x :
-# 		pos.x = rect.position.x + ix
-# 		if pos.x < 0 || pos.x >= bitmap.get_size().x : continue
-# 		for iy in rect.size.y :
-# 			pos.y = rect.position.y + iy
-# 			if pos.y < 0 || pos.y >= bitmap.get_size().y : continue
-# 			var local = local_rect_position + Vector2i(ix, iy)
-# 			if !sprite.is_pixel_opaque(local) : continue
-# 			total_pixels += 1.0
-# 			if !bitmap.get_bitv(pos) : continue
-# 			overlap_pixels += 1.0
-# 	return overlap_pixels / total_pixels
+
 
 func get_overlap_chunks_percent(dest: DestructibleSprite) -> float :
 	var overlap_pixels : int = 0
@@ -148,11 +112,10 @@ func get_overlap_chunks_percent(dest: DestructibleSprite) -> float :
 	return float(overlap_pixels) / float(dest.original_pixels)
 	
 func check_collectibles(list: Array[DestructibleSprite]) -> void :
-	for i in destructibles :
+	for i in list :
 		var ic := Utils.find_child(i, "Collectible")
 		if ic == null : continue
 		var percent := get_overlap_chunks_percent(i)
-		print((percent*100), "% covered by terrrain")
 		if percent > ic.collect_threshold : continue
 
 		ic.collect()

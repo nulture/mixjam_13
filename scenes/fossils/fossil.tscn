@@ -21,8 +21,6 @@ image = SubResource("Image_8s862")
 texture = SubResource("ImageTexture_nmbt2")
 centered = false
 script = ExtResource("1_hnls6")
-epsilon = null
-collision_layer = null
 destroy_threshold = 0.5
 
 [node name="anim_particle_emitter" type="Node2D" parent="."]

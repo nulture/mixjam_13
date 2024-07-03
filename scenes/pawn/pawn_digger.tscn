@@ -14,10 +14,10 @@ size = Vector2(130, 70)
 size = Vector2(110, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g211y"]
-size = Vector2(4, 56)
+size = Vector2(10, 74)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6p5bq"]
-size = Vector2(100, 4)
+size = Vector2(136, 10)
 
 [sub_resource type="Image" id="Image_5l7xa"]
 data = {
@@ -54,41 +54,37 @@ safe_colliders = [NodePath("safe_rect_left"), NodePath("safe_rect_right"), NodeP
 unsafe_colliders = [NodePath("unsafe_rect_left"), NodePath("unsafe_rect_right"), NodePath("unsafe_rect_down")]
 
 [node name="safe_shape" type="CollisionShape2D" parent="dig_area" index="0"]
+visible = false
 position = Vector2(0, 7)
 shape = SubResource("RectangleShape2D_nkorf")
 
 [node name="unsafe_shape" type="CollisionShape2D" parent="dig_area" index="1"]
+visible = false
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_sb156")
 
 [node name="safe_rect_left" type="CollisionShape2D" parent="dig_area" index="2"]
-visible = false
-position = Vector2(-54, 0)
+position = Vector2(-53, 9)
 shape = SubResource("RectangleShape2D_g211y")
 
 [node name="safe_rect_right" type="CollisionShape2D" parent="dig_area" index="3"]
-visible = false
-position = Vector2(54, 0)
+position = Vector2(63, 9)
 shape = SubResource("RectangleShape2D_g211y")
 
 [node name="safe_rect_down" type="CollisionShape2D" parent="dig_area" index="4"]
-visible = false
-position = Vector2(0, 32)
+position = Vector2(0, 31)
 shape = SubResource("RectangleShape2D_6p5bq")
 
 [node name="unsafe_rect_left" type="CollisionShape2D" parent="dig_area" index="5"]
-visible = false
-position = Vector2(-50, 0)
+position = Vector2(-63, 9)
 shape = SubResource("RectangleShape2D_g211y")
 
 [node name="unsafe_rect_right" type="CollisionShape2D" parent="dig_area" index="6"]
-visible = false
-position = Vector2(50, 0)
+position = Vector2(53, 9)
 shape = SubResource("RectangleShape2D_g211y")
 
 [node name="unsafe_rect_down" type="CollisionShape2D" parent="dig_area" index="7"]
-visible = false
-position = Vector2(0, 28)
+position = Vector2(0, 41)
 shape = SubResource("RectangleShape2D_6p5bq")
 
 [node name="sprite_placeholder" parent="." index="2"]
