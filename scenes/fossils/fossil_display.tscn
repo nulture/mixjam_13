@@ -1,0 +1,65 @@
+[gd_scene load_steps=6 format=3 uid="uid://76jcih56hlgl"]
+
+[ext_resource type="Script" path="res://scripts/fossil_display.gd" id="1_lobv3"]
+
+[sub_resource type="Animation" id="Animation_8pgb5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_6bvu2"]
+resource_name = "enter"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(-1.5, 0),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -360)]
+}
+
+[sub_resource type="Animation" id="Animation_bvg4v"]
+resource_name = "exit"
+length = 5.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(4, 5.5),
+"transitions": PackedFloat32Array(2, -1.5),
+"update": 0,
+"values": [Vector2(0, -360), Vector2(0, -720)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_57lwd"]
+_data = {
+"RESET": SubResource("Animation_8pgb5"),
+"enter": SubResource("Animation_6bvu2"),
+"exit": SubResource("Animation_bvg4v")
+}
+
+[node name="fossil_display" type="Node2D"]
+script = ExtResource("1_lobv3")
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_57lwd")
+}

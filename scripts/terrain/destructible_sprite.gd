@@ -1,7 +1,11 @@
 @tool class_name DestructibleSprite extends Sprite2D
 
-## If the percentage of original pixels is less below this value, the object is destroyed.
+signal destroyed
+
+## If the percentage of original pixels is less than this value, the specimen is unrecognizable and this can no longer be obtained.
 @export_range(0.0, 1.0) var destroy_threshold = 0.0
+
+var is_destroyed : bool
 
 var _destruction_enabled : bool = true
 var destruction_enabled : bool = true :
@@ -16,10 +20,10 @@ var image : Image
 var original_pixels : int
 
 var global_rect : Rect2i :
-	get: return Rect2i(Vector2i(global_position + get_rect().position), get_rect().size)
+	get: return Rect2i(Vector2i(global_position) + Vector2i(get_rect().position), Vector2i(get_rect().size))
 
 var rect : Rect2i:
-	get: return get_rect()
+	get: return Rect2i(get_rect())
 
 var image_rect : Rect2i:
 	get: return Rect2i(Vector2i.ZERO, get_rect().size)
@@ -27,8 +31,8 @@ var image_rect : Rect2i:
 var smart_offset : Vector2i:
 	get:
 		if centered :
-			return offset - get_rect().size * 0.5
-		return offset
+			return floor(offset - get_rect().size * 0.5)
+		return floor(offset)
 
 func _init(_image: Image = null) -> void:
 	assigned_image = _image
@@ -78,6 +82,7 @@ func set_pixels_rect(_rect: Rect2i, value: bool) :
 			ip.y = local.y + iy
 			set_pixelv(ip, value)
 	refresh_texture()
+	check_destroyed()
 
 func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
 	if !destruction_enabled : return
@@ -94,10 +99,16 @@ func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
 			if dist > radius : continue
 			set_pixelv(ip, value)
 	refresh_texture()
+	check_destroyed()
+
+func check_destroyed() -> void:
+	if get_remaining_percent() < destroy_threshold :
+		destruction_enabled = false
+		is_destroyed = true
+		destroyed.emit()
 
 func pixel_is_actually_opaque(xy : Vector2i) -> bool :
 	return image.get_pixelv(xy).a > 0.5
-
 
 func overlapping_pixels(other: DestructibleSprite) -> int :
 

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bwrtjhmf27v64"]
+
+[ext_resource type="Script" path="res://scripts/ui/fossil_display_spawner.gd" id="1_mij43"]
+[ext_resource type="PackedScene" uid="uid://76jcih56hlgl" path="res://scenes/fossils/fossil_display.tscn" id="2_7g0y5"]
+
+[node name="end_level_screen" type="Node2D"]
+
+[node name="fossil_display_spawner" type="Node2D" parent="."]
+position = Vector2(320, 540)
+script = ExtResource("1_mij43")
+fossil_display_scene = ExtResource("2_7g0y5")

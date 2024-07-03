@@ -114,10 +114,15 @@ func get_overlap_chunks_percent(dest: DestructibleSprite) -> float :
 	
 func check_collectibles(list: Array[DestructibleSprite]) -> void :
 	for i in list :
+		if i.is_destroyed :
+			destructibles.erase(i)
+			continue
+
 		var ic := Utils.find_child(i, "Collectible")
 		if ic == null : continue
 		var percent := get_overlap_chunks_percent(i)
 		if percent > ic.collect_threshold : continue
 
+		FossilDisplaySpawner.inst.register_fossil(i.get_parent())
 		ic.collect()
 		destructibles.erase(i)
