@@ -1,7 +1,9 @@
 class_name Terrain extends Node2D
 
 @export var crust_texture : Texture2D
-@export var destructible_root : Node2D
+
+@onready var chunk_root : Node2D = $chunk_root
+@onready var destructible_root : Node2D = $destructible_root
 
 var chunks : Dictionary
 var chunk_grid_size : Vector2i
@@ -41,8 +43,7 @@ func create_chunk(coord: Vector2i) :
 
 	var node := CrustChunk.new(subimage, coord)
 	chunks[coord] = node
-	add_child(node)
-	# move_child(node, 0)
+	chunk_root.add_child(node)
 
 func position_to_coord(vector: Vector2) -> Vector2i :
 	return floor(vector / Vector2(CrustChunk.chunk_size))

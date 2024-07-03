@@ -1,9 +1,11 @@
-extends Area2D
+class_name DiggerArea extends Area2D
 
 @export var dig_delay : float = 1.0
 
 @export var safe_colliders : Array[CollisionShape2D]
 @export var unsafe_colliders : Array[CollisionShape2D]
+
+@onready var pawn_digger : PawnDigger = $".."
 
 @onready var safe_rect : CollisionShape2D = $safe_shape
 @onready var unsafe_rect : CollisionShape2D = $unsafe_shape
@@ -61,7 +63,7 @@ func _input(event: InputEvent) -> void:
 		charging = false
 
 func destroy_stuff() -> void :
-	var input_vector = Input.get_vector("p1_move_left", "p1_move_right", "p1_move_up", "p1_move_down")
+	var input_vector = pawn_digger.velocity.normalized()
 
 	if input_vector.length_squared() == 0 : return
 	if abs(input_vector.x) >= abs(input_vector.y) :

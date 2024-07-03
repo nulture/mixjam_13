@@ -10,6 +10,12 @@ var polys : Array[PackedVector2Array]
 var ready_to_update_polygons : bool
 var thread : Thread
 
+func set_destruction_enabled(value: bool) -> void:
+	super.set_destruction_enabled(value)
+	for i in body.get_children() :
+		i.queue_free()
+	refresh_polygons()
+
 func _init(_image: Image = null) -> void:
 	super._init(_image)
 
@@ -58,6 +64,8 @@ func calculate_polygons() -> void:
 
 func refresh_polygons() -> void:
 	super.refresh_texture()
+	if !destruction_enabled : return
+
 	for i in body.get_children() :
 		i.queue_free()
 

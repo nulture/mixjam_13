@@ -5,9 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://prb2lt1jxqms" path="res://scenes/pawn/pawn_brusher.tscn" id="2_ffhiy"]
 [ext_resource type="Texture2D" uid="uid://cieuh44rwm35o" path="res://assets/textures/t_level_test.png" id="3_dv3jd"]
 [ext_resource type="Script" path="res://scripts/terrain/terrain.gd" id="3_m02dc"]
-[ext_resource type="PackedScene" uid="uid://dk6e1gb2mgfc7" path="res://scenes/fossils/fossil.tscn" id="6_grtcm"]
 [ext_resource type="LabelSettings" uid="uid://bdojf6uy0sh31" path="res://assets/fonts/font_nes_settings.tres" id="7_288sa"]
-[ext_resource type="PackedScene" uid="uid://og3uab5mmylm" path="res://scenes/fossils/fossil_trex_foot.tscn" id="8_4md3w"]
+[ext_resource type="PackedScene" uid="uid://og3uab5mmylm" path="res://scenes/fossils/fossil_trex_foot.tscn" id="8_w0bmb"]
+[ext_resource type="PackedScene" uid="uid://by4kvnxp3kl6m" path="res://scenes/fossils/fossil_nautilus.tscn" id="8_y7isn"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1wl7y"]
 normal = Vector2(0, 1)
@@ -22,7 +22,11 @@ normal = Vector2(-1, 0)
 
 [node name="test_level" type="Node2D"]
 
+[node name="game_camera" type="Camera2D" parent="."]
+anchor_mode = 0
+
 [node name="debug_camera" type="Camera2D" parent="."]
+position = Vector2(167, -192)
 anchor_mode = 0
 script = ExtResource("1_2u7ec")
 speed = 100.0
@@ -53,47 +57,24 @@ shape = SubResource("WorldBoundaryShape2D_2wwo0")
 [node name="pawn_digger" parent="." instance=ExtResource("1_hqru8")]
 position = Vector2(100, 119)
 
-[node name="terrain" type="Sprite2D" parent="." node_paths=PackedStringArray("destructible_root")]
+[node name="terrain" type="Sprite2D" parent="."]
 texture = ExtResource("3_dv3jd")
 centered = false
 script = ExtResource("3_m02dc")
 crust_texture = ExtResource("3_dv3jd")
-destructible_root = NodePath("destructibles")
 
-[node name="destructibles" type="Node2D" parent="terrain"]
+[node name="chunk_root" type="Node2D" parent="terrain"]
 
-[node name="trex_foot" parent="terrain/destructibles" instance=ExtResource("8_4md3w")]
-position = Vector2(295, 110)
+[node name="destructible_root" type="Node2D" parent="terrain"]
 
-[node name="fossil" parent="terrain/destructibles/trex_foot" index="0"]
-position = Vector2(193, 36)
+[node name="fossil_nautilus" parent="terrain/destructible_root" instance=ExtResource("8_y7isn")]
+position = Vector2(224, 147)
 
-[node name="fossil_2" parent="terrain/destructibles/trex_foot" index="1"]
-position = Vector2(26, -9)
+[node name="fossil_nautilus_2" parent="terrain/destructible_root" instance=ExtResource("8_y7isn")]
+position = Vector2(125, 266)
 
-[node name="fossil_3" parent="terrain/destructibles/trex_foot" index="2"]
-position = Vector2(-63, 37)
-
-[node name="fossil_4" parent="terrain/destructibles/trex_foot" index="3"]
-position = Vector2(58, 44)
-
-[node name="fossil_5" parent="terrain/destructibles/trex_foot" index="4"]
-position = Vector2(-38, 123)
-
-[node name="fossil_6" parent="terrain/destructibles/trex_foot" index="5"]
-position = Vector2(120, -70)
-
-[node name="fossil_7" parent="terrain/destructibles/trex_foot" index="6"]
-position = Vector2(136, 115)
-
-[node name="fossil_collection" type="Node2D" parent="terrain/destructibles"]
-
-[node name="nautilus" parent="terrain/destructibles/fossil_collection" instance=ExtResource("6_grtcm")]
-position = Vector2(117, 300)
-centered = true
-
-[node name="nautilus_3" parent="terrain/destructibles/fossil_collection" instance=ExtResource("6_grtcm")]
-position = Vector2(535, 246)
+[node name="trex_foot" parent="terrain/destructible_root" instance=ExtResource("8_w0bmb")]
+position = Vector2(401, 194)
 
 [node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
 position = Vector2(99, 65)
@@ -146,4 +127,12 @@ text = "Specimens excavated : X"
 label_settings = ExtResource("7_288sa")
 uppercase = true
 
-[editable path="terrain/destructibles/trex_foot"]
+[editable path="terrain/destructible_root/fossil_nautilus"]
+[editable path="terrain/destructible_root/trex_foot"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_0"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_1"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_2"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_3"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_4"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_5"]
+[editable path="terrain/destructible_root/trex_foot/group/trex_foot_6"]

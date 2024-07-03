@@ -1,7 +1,15 @@
-class_name DestructibleSprite extends Sprite2D
+@tool class_name DestructibleSprite extends Sprite2D
 
 ## If the percentage of original pixels is less below this value, the object is destroyed.
 @export_range(0.0, 1.0) var destroy_threshold = 0.0
+
+var _destruction_enabled : bool = true
+var destruction_enabled : bool = true :
+	get: return _destruction_enabled
+	set (value):
+		set_destruction_enabled(value)
+func set_destruction_enabled(value: bool) -> void:
+	_destruction_enabled = value
 
 var assigned_image : Image
 var image : Image
@@ -27,8 +35,6 @@ func _init(_image: Image = null) -> void:
 
 
 func _ready() -> void:
-	print(name)
-
 	# Texture must be duplicated per instance, so separated instances may be modified independently
 	if texture == null : texture = ImageTexture.new()
 	else : texture = texture.duplicate(true)
@@ -41,7 +47,8 @@ func _ready() -> void:
 		assigned_image = texture.get_image()
 	image = assigned_image
 
-	original_pixels = get_opaque_pixels()
+	if !Engine.is_editor_hint() :
+		original_pixels = get_opaque_pixels()
 	pass
 
 func get_remaining_percent() -> float :
@@ -59,6 +66,8 @@ func refresh_texture() -> void :
 	texture.set_image(image)
 
 func set_pixels_rect(_rect: Rect2i, value: bool) :
+	if !destruction_enabled : return
+
 	var sect = global_rect.intersection(_rect)
 	var local = sect.position - Vector2i(global_position) - smart_offset
 
@@ -71,6 +80,8 @@ func set_pixels_rect(_rect: Rect2i, value: bool) :
 	refresh_texture()
 
 func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
+	if !destruction_enabled : return
+
 	var origin_local = origin - Vector2(global_rect.position)
 	var sect = global_rect.intersection(DestructibleSprite.rect_from_circle(origin, radius))
 	var local = sect.position - Vector2i(global_position) - smart_offset
@@ -84,7 +95,7 @@ func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
 			set_pixelv(ip, value)
 	refresh_texture()
 
-func stupid(xy : Vector2i) -> bool :
+func pixel_is_actually_opaque(xy : Vector2i) -> bool :
 	return image.get_pixelv(xy).a > 0.5
 
 
@@ -103,7 +114,7 @@ func overlapping_pixels(other: DestructibleSprite) -> int :
 		for iy in sect.size.y :
 			ip.y = local.y + iy
 			op.y = local_other.y + iy
-			if stupid(ip) && other.stupid(op) :
+			if pixel_is_actually_opaque(ip) && other.pixel_is_actually_opaque(op) :
 				result += 1
 	return result
 
