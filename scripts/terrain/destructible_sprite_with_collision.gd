@@ -32,7 +32,8 @@ func _ready() -> void:
 	refresh_polygons()
 
 func _exit_tree() -> void:
-	thread.wait_to_finish()
+	# thread.wait_to_finish()
+	pass
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

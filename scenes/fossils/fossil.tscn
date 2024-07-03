@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://dk6e1gb2mgfc7"]
+[gd_scene load_steps=7 format=3 uid="uid://dk6e1gb2mgfc7"]
 
 [ext_resource type="Script" path="res://scripts/terrain/destructible_sprite_with_collision.gd" id="1_hnls6"]
 [ext_resource type="SpriteFrames" uid="uid://ch4qnyqsce7ik" path="res://assets/sprites/sparkles.tres" id="2_0o8mp"]
 [ext_resource type="Script" path="res://addons/scrungly_tools/scripts/anim_particle_emitter_2d.gd" id="3_emxhv"]
+[ext_resource type="Script" path="res://scripts/terrain/collectible.gd" id="4_2rycw"]
 
 [sub_resource type="Image" id="Image_8s862"]
 data = {
@@ -20,9 +21,16 @@ image = SubResource("Image_8s862")
 texture = SubResource("ImageTexture_nmbt2")
 centered = false
 script = ExtResource("1_hnls6")
+epsilon = null
+collision_layer = null
+destroy_threshold = 0.5
 
 [node name="anim_particle_emitter" type="Node2D" parent="."]
 script = ExtResource("3_emxhv")
 spawn_radius = 32.0
 sprite_frames = ExtResource("2_0o8mp")
 lifetime = 3.34
+
+[node name="collectible" type="Node" parent="."]
+script = ExtResource("4_2rycw")
+collect_threshold = 0.025

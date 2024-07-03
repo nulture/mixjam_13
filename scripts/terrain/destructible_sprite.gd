@@ -1,13 +1,10 @@
 class_name DestructibleSprite extends Sprite2D
 
-## If the percentage of current pixels covered is less than this value, the fossil is collected.
-@export_range(0.0, 1.0) var collect_threshold = 0.1
-## If the percentage of original pixels is less below this value, the fossil is unusable.
-@export_range(0.0, 1.0) var destroy_threshold = 0.5
-
-var original_pixels : int
+## If the percentage of original pixels is less below this value, the object is destroyed.
+@export_range(0.0, 1.0) var destroy_threshold = 0.0
 
 var image : Image
+var original_pixels : int
 
 var global_rect : Rect2i :
 	get: return Rect2i(Vector2i(global_position + get_rect().position), get_rect().size)
@@ -77,17 +74,28 @@ func set_pixels_circle(origin: Vector2, radius: float, value: bool) :
 			set_pixelv(ip, value)
 	refresh_texture()
 
+func overlapping_pixels(other: DestructibleSprite) -> int :
+	var result : int = 0
+	var sect = global_rect.intersection(other.global_rect)
+	var local = sect.position - Vector2i(global_position) - smart_offset
+	var local_other = sect.position - Vector2i(other.global_position) - other.smart_offset
+	var ip := Vector2i.ZERO
+	var op := Vector2i.ZERO
+	for ix in sect.size.x :
+		ip.x = local.x + ix
+		op.x = local_other.x + ix
+		for iy in sect.size.y :
+			ip.y = local.y + iy
+			op.y = local_other.y + iy
+			if is_pixel_opaque(ip) && other.is_pixel_opaque(op) :
+				result += 1
+	return result
+
 func set_pixelv(xy: Vector2i, value: bool) -> void:
 	var color := image.get_pixelv(xy)
 	if value : color.a = 1
 	else : color.a = 0
 	image.set_pixelv(xy, color)
-
-# func collect() -> void :
-# 	print("Collected! (%2.0f percent remaining)" % (get_remaining_percent() * 100))
-# 	Terrain.inst.destructibles.erase(self)
-# 	queue_free()
-
 
 # func check_destroy() -> bool:
 # 	if get_remaining_percent() < destroy_threshold :

@@ -72,25 +72,28 @@ func set_pixels_rect(rect : Rect2i, affect_destructibles : bool, value : bool) -
 	for i in get_intersecting_chunks(rect) :
 		i.set_pixels_rect(rect, value)
 	
-	if !value && affect_destructibles :
+	if !value:
+		var collectibles : Array[DestructibleSprite] = []
 		for i in destructibles :
-			if rect.intersects(i.global_rect) : 
-				i.set_pixels_rect(rect, value)
-	
-	# collect_destructibles(rect)
+			if rect.intersects(i.global_rect) :
+				if affect_destructibles :
+					i.set_pixels_rect(i.global_rect, value)
+				collectibles.append(i)
+		check_collectibles(collectibles)
 	
 func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : bool, value : bool) -> void :
 	var rect = DestructibleSprite.rect_from_circle(origin, radius)
 	for i in get_intersecting_chunks(rect) :
 		i.set_pixels_circle(origin, radius, value)
 	
-	if !value && affect_destructibles :
+	if !value:
+		var collectibles : Array[DestructibleSprite] = []
 		for i in destructibles :
-			if rect.intersects(i.global_rect) : 
-				i.set_pixels_circle(origin, radius, value)
-	
-	# collect_destructibles(rect)
-
+			if rect.intersects(i.global_rect) :
+				if affect_destructibles :
+					i.set_pixels_circle(origin, radius, value)
+				collectibles.append(i)
+		check_collectibles(collectibles)
 
 func register_destructibles() -> void :
 	destructibles.clear()
@@ -134,10 +137,23 @@ func register_destructibles() -> void :
 # 			if !bitmap.get_bitv(pos) : continue
 # 			overlap_pixels += 1.0
 # 	return overlap_pixels / total_pixels
+
+func get_overlap_chunks_percent(dest: DestructibleSprite) -> float :
+	var overlap_pixels : int = 0
 	
-# func collect_destructibles(rect: Rect2i) -> void :
-# 	for i in destructibles :
-# 		if !rect.intersects(i.global_rect) : continue
-# 		if Terrain.get_sprite_overlap_percentage(crust_bitmap, i) > i.collect_threshold : continue
-		
-# 		i.collect()
+	var overlaps = get_intersecting_chunks(dest.global_rect)
+	for i in overlaps:
+		overlap_pixels += dest.overlapping_pixels(i)
+
+	return float(overlap_pixels) / float(dest.original_pixels)
+	
+func check_collectibles(list: Array[DestructibleSprite]) -> void :
+	for i in destructibles :
+		var ic := Utils.find_child(i, "Collectible")
+		if ic == null : continue
+		var percent := get_overlap_chunks_percent(i)
+		print((percent*100), "% covered by terrrain")
+		if percent > ic.collect_threshold : continue
+
+		ic.collect()
+		destructibles.erase(i)

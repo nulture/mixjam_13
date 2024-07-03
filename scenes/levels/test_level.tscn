@@ -66,13 +66,21 @@ fossil_root = NodePath("fossil_map/fossil_collection")
 [node name="nautilus" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(381, 78)
 centered = true
+epsilon = null
 collision_layer = 7
+destroy_threshold = null
 
 [node name="nautilus_2" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(289, 286)
+epsilon = null
+collision_layer = null
+destroy_threshold = null
 
 [node name="nautilus_3" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(535, 246)
+epsilon = null
+collision_layer = null
+destroy_threshold = null
 
 [node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
 position = Vector2(99, 65)
