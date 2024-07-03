@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://cwg51gewbq7em"]
+[gd_scene load_steps=13 format=3 uid="uid://cwg51gewbq7em"]
 
 [ext_resource type="Script" path="res://scripts/editor/debug_camera.gd" id="1_2u7ec"]
 [ext_resource type="PackedScene" uid="uid://bxgwl1et1p84x" path="res://scenes/pawn/pawn_digger.tscn" id="1_hqru8"]
 [ext_resource type="PackedScene" uid="uid://prb2lt1jxqms" path="res://scenes/pawn/pawn_brusher.tscn" id="2_ffhiy"]
-[ext_resource type="Texture2D" uid="uid://cieuh44rwm35o" path="res://assets/textures/t_level_1.png" id="3_dv3jd"]
+[ext_resource type="Texture2D" uid="uid://cieuh44rwm35o" path="res://assets/textures/t_level_test.png" id="3_dv3jd"]
 [ext_resource type="Script" path="res://scripts/terrain/terrain.gd" id="3_m02dc"]
 [ext_resource type="PackedScene" uid="uid://dk6e1gb2mgfc7" path="res://scenes/fossils/fossil.tscn" id="6_grtcm"]
 [ext_resource type="LabelSettings" uid="uid://bdojf6uy0sh31" path="res://assets/fonts/font_nes_settings.tres" id="7_288sa"]
+[ext_resource type="PackedScene" uid="uid://og3uab5mmylm" path="res://scenes/fossils/fossil_trex_foot.tscn" id="8_4md3w"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_1wl7y"]
 normal = Vector2(0, 1)
@@ -52,25 +53,46 @@ shape = SubResource("WorldBoundaryShape2D_2wwo0")
 [node name="pawn_digger" parent="." instance=ExtResource("1_hqru8")]
 position = Vector2(100, 119)
 
-[node name="terrain" type="Sprite2D" parent="." node_paths=PackedStringArray("fossil_root")]
+[node name="terrain" type="Sprite2D" parent="." node_paths=PackedStringArray("destructible_root")]
 texture = ExtResource("3_dv3jd")
 centered = false
 script = ExtResource("3_m02dc")
 crust_texture = ExtResource("3_dv3jd")
-fossil_root = NodePath("fossil_map/fossil_collection")
+destructible_root = NodePath("destructibles")
 
-[node name="fossil_map" type="Node2D" parent="terrain"]
+[node name="destructibles" type="Node2D" parent="terrain"]
 
-[node name="fossil_collection" type="Node2D" parent="terrain/fossil_map"]
+[node name="trex_foot" parent="terrain/destructibles" instance=ExtResource("8_4md3w")]
+position = Vector2(295, 110)
 
-[node name="nautilus" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
-position = Vector2(198, 162)
+[node name="fossil" parent="terrain/destructibles/trex_foot" index="0"]
+position = Vector2(193, 36)
+
+[node name="fossil_2" parent="terrain/destructibles/trex_foot" index="1"]
+position = Vector2(26, -9)
+
+[node name="fossil_3" parent="terrain/destructibles/trex_foot" index="2"]
+position = Vector2(-63, 37)
+
+[node name="fossil_4" parent="terrain/destructibles/trex_foot" index="3"]
+position = Vector2(58, 44)
+
+[node name="fossil_5" parent="terrain/destructibles/trex_foot" index="4"]
+position = Vector2(-38, 123)
+
+[node name="fossil_6" parent="terrain/destructibles/trex_foot" index="5"]
+position = Vector2(120, -70)
+
+[node name="fossil_7" parent="terrain/destructibles/trex_foot" index="6"]
+position = Vector2(136, 115)
+
+[node name="fossil_collection" type="Node2D" parent="terrain/destructibles"]
+
+[node name="nautilus" parent="terrain/destructibles/fossil_collection" instance=ExtResource("6_grtcm")]
+position = Vector2(117, 300)
 centered = true
 
-[node name="nautilus_2" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
-position = Vector2(289, 286)
-
-[node name="nautilus_3" parent="terrain/fossil_map/fossil_collection" instance=ExtResource("6_grtcm")]
+[node name="nautilus_3" parent="terrain/destructibles/fossil_collection" instance=ExtResource("6_grtcm")]
 position = Vector2(535, 246)
 
 [node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
@@ -123,3 +145,5 @@ offset_bottom = 31.0
 text = "Specimens excavated : X"
 label_settings = ExtResource("7_288sa")
 uppercase = true
+
+[editable path="terrain/destructibles/trex_foot"]

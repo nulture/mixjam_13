@@ -6,8 +6,8 @@ const HALF_PI := PI * 0.5
 @export var speed_down_add = 1.0
 @export var friction : Vector2 = Vector2.ONE
 
-@export var aim_speed : float = 1.0
-@export var laser_pushback : Vector2
+# @export var aim_speed : float = 1.0
+# @export var laser_pushback : Vector2
 
 # @onready var digger_arm : Node2D = $digger_arm
 @onready var digger_arm : Node2D = null
@@ -36,9 +36,8 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	super._process(delta)
 	
-	if in_aiming_mode && input_vector.length_squared() != 0 :
-		digger_arm.rotation = move_toward_angle(digger_arm.rotation, input_vector.angle(), aim_speed * delta)
-		pass
+	# if in_aiming_mode && input_vector.length_squared() != 0 :
+	# 	digger_arm.rotation = move_toward_angle(digger_arm.rotation, input_vector.angle(), aim_speed * delta)
 	
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("p1_secondary") :

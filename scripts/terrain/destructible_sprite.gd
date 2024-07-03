@@ -3,6 +3,7 @@ class_name DestructibleSprite extends Sprite2D
 ## If the percentage of original pixels is less below this value, the object is destroyed.
 @export_range(0.0, 1.0) var destroy_threshold = 0.0
 
+var assigned_image : Image
 var image : Image
 var original_pixels : int
 
@@ -22,17 +23,25 @@ var smart_offset : Vector2i:
 		return offset
 
 func _init(_image: Image = null) -> void:
+	assigned_image = _image
+
+
+func _ready() -> void:
+	print(name)
+
 	# Texture must be duplicated per instance, so separated instances may be modified independently
 	if texture == null : texture = ImageTexture.new()
 	else : texture = texture.duplicate(true)
 
-	if _image == null : _image = self.texture.get_image()
-	image = _image
-	texture.set_image(image)
+
+	if assigned_image != null :
+		texture.set_image(assigned_image)
+		pass
+	else :
+		assigned_image = texture.get_image()
+	image = assigned_image
 
 	original_pixels = get_opaque_pixels()
-
-func _ready() -> void:
 	pass
 
 func get_remaining_percent() -> float :
@@ -116,6 +125,16 @@ func set_pixelv(xy: Vector2i, value: bool) -> void:
 # 	Terrain.inst.destructibles.erase(self)
 # 	queue_free()
 
+static func print_image_alpha(img: Image) -> void:
+	var s = ""
+	for ix in img.get_width():
+		for iy in img.get_height():
+			if img.get_pixel(ix, iy).a > 0.5 :
+				s += "X"
+			else :
+				s += " "
+		s += "\n"
+	print(s)
 
 static func rect_from_circle(origin : Vector2i, radius : float) -> Rect2i :
 	return Rect2i(origin - Vector2i.ONE * ceili(radius), Vector2i.ONE * ceili(radius) * 2)

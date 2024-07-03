@@ -1,7 +1,7 @@
 class_name Terrain extends Node2D
 
 @export var crust_texture : Texture2D
-@export var fossil_root : Node2D
+@export var destructible_root : Node2D
 
 var chunks : Dictionary
 var chunk_grid_size : Vector2i
@@ -42,7 +42,7 @@ func create_chunk(coord: Vector2i) :
 	var node := CrustChunk.new(subimage, coord)
 	chunks[coord] = node
 	add_child(node)
-	move_child(node, 0)
+	# move_child(node, 0)
 
 func position_to_coord(vector: Vector2) -> Vector2i :
 	return floor(vector / Vector2(CrustChunk.chunk_size))
@@ -98,7 +98,7 @@ func set_pixels_circle(origin : Vector2, radius : float, affect_destructibles : 
 
 func register_destructibles() -> void :
 	destructibles.clear()
-	for i in fossil_root.find_children("*", "DestructibleSprite") :
+	for i in destructible_root.find_children("*", "DestructibleSprite") :
 		destructibles.append(i)
 
 

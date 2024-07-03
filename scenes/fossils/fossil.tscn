@@ -17,7 +17,7 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_nmbt2"]
 image = SubResource("Image_8s862")
 
-[node name="nautilus" type="Sprite2D"]
+[node name="fossil" type="Sprite2D"]
 texture = SubResource("ImageTexture_nmbt2")
 centered = false
 script = ExtResource("1_hnls6")

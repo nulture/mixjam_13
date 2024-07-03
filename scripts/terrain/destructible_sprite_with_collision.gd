@@ -12,14 +12,14 @@ var thread : Thread
 
 func _init(_image: Image = null) -> void:
 	super._init(_image)
-	bitmap = BitMap.new()
-
-	if texture.get_image() == null : return
-	bitmap.create_from_image_alpha(texture.get_image())
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super._ready()
+
+	bitmap = BitMap.new()
+	if texture.get_image() != null :
+		bitmap.create_from_image_alpha(texture.get_image())
 
 
 	thread = Thread.new()
