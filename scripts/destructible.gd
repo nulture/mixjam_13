@@ -27,10 +27,9 @@ var _image : Image
 @export var image : Image :
 	get: return _image
 	set (value) :
-		if _image == value : return
 		_image = value
 
-		if sprite == null : return
+		if sprite == null || _image == null : return
 
 		sprite.texture = ImageTexture.new()
 		refresh_all()
@@ -61,8 +60,7 @@ var image_rect : Rect2i :
 func _ready() -> void:
 	if sprite.texture == null : return
 
-	image = sprite.texture.get_image()
-	refresh_body()
+	image = _image
 	pass
 
 func create_with_image(img: Image, centered: bool = false) -> void :

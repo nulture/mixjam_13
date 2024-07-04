@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c61vb6ovu6wvi"]
+[gd_scene load_steps=9 format=3 uid="uid://c61vb6ovu6wvi"]
 
 [ext_resource type="PackedScene" uid="uid://dflbjfr1w12x2" path="res://scenes/destructibles/destructible_base.tscn" id="1_veytl"]
 [ext_resource type="Script" path="res://scripts/fossil.gd" id="2_k7stt"]
 [ext_resource type="Image" uid="uid://budinhx1tjm1l" path="res://assets/sprites/fossils/fossil_nautilus.png" id="3_tdgvh"]
+[ext_resource type="AnimationLibrary" uid="uid://30bnnhssojx" path="res://assets/animations/anim_fossil.res" id="4_sjaxn"]
 
 [sub_resource type="Image" id="Image_l53sh"]
 data = {
@@ -16,6 +17,73 @@ data = {
 [sub_resource type="ImageTexture" id="ImageTexture_1ruww"]
 image = SubResource("Image_l53sh")
 
+[sub_resource type="Animation" id="Animation_75306"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("sprite:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("sprite:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("sprite:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("sprite:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("sprite:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l0dgi"]
+_data = {
+"RESET": SubResource("Animation_75306")
+}
+
 [node name="fossil_base" instance=ExtResource("1_veytl")]
 script = ExtResource("2_k7stt")
 collect_threshold = 0.05
@@ -27,12 +95,18 @@ image = ExtResource("3_tdgvh")
 texture = SubResource("ImageTexture_1ruww")
 
 [node name="body" parent="sprite" index="0"]
+visible = false
 position = Vector2(-32, -32)
 collision_layer = 38
 
 [node name="area" type="Area2D" parent="sprite" index="1"]
+visible = false
 position = Vector2(-32, -32)
 collision_layer = 32
 collision_mask = 16
 
 [node name="animation_player" type="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": SubResource("AnimationLibrary_l0dgi"),
+"fossil": ExtResource("4_sjaxn")
+}
