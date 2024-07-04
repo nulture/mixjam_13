@@ -1,9 +1,10 @@
 @tool class_name Fossil extends Destructible
 ## Fossils can be irreparably damaged or collected if not overlapping anything.
 
-signal dislodged
+signal collected
+signal destroyed
 
-@export_range(0.0, 1.0) var collect_threshold := 0.2
+@export_range(0.0, 1.0) var collect_threshold := 0.05
 @export_range(0.0, 1.0) var destroy_threshold := 0.67
 
 @onready var area : Area2D = $sprite/area
@@ -46,7 +47,7 @@ func _ready() -> void :
 	super._ready()
 
 func _physics_process(delta: float) -> void:
-	# check_overlaps()
+	# check_collect()
 	pass
 
 func refresh_body() -> void :
@@ -56,6 +57,7 @@ func refresh_body() -> void :
 		i.queue_free()
 	for i in body.get_children() :
 		area.add_child(i.duplicate())
+	check_destroy()
 
 func collect() -> void:
 	collision_enabled = false
@@ -64,9 +66,19 @@ func collect() -> void:
 	chunk_nodes.clear()
 	chunk_calls.clear()
 	chunk_pixels.clear()
-	dislodged.emit()
+	collected.emit()
 
-func check_overlaps(chunk: Destructible) -> void :
+func destroy() -> void :
+	collision_enabled = false
+	print("Destroyed")
+	destroyed.emit()
+
+func check_destroy() -> void :
+	if get_pixels_percent_of_original() < destroy_threshold :
+		destroy()
+
+
+func check_collect(chunk: Destructible) -> void :
 	var index = chunk_nodes.find(chunk)
 	chunk_pixels[index] = get_overlapping_pixels(chunk_nodes[index])
 
@@ -79,7 +91,7 @@ func on_body_entered(_body: Node2D) -> void :
 	var other := _body.get_parent().get_parent() as Destructible
 	if other is Destructible && !chunk_nodes.has(other) :
 		chunk_nodes.append(other)
-		var chunk_call = func() -> void : check_overlaps(other)
+		var chunk_call = func() -> void : check_collect(other)
 		chunk_calls.append(chunk_call)
 		chunk_pixels.append(get_overlapping_pixels(other))
 
