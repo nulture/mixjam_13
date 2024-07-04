@@ -1,4 +1,4 @@
-class_name DiggerArea extends Area2D
+class_name DiggerArea extends DestructArea
 
 @export var dig_delay : float = 1.0
 
@@ -40,6 +40,8 @@ func get_rect_world(rect: CollisionShape2D) -> Rect2 :
 	return Rect2(rect.global_position + rect.shape.get_rect().position, rect.shape.get_rect().size)
 
 func _ready() -> void:
+	super._ready()
+
 	timer = Timer.new()
 	timer.wait_time = dig_delay
 	timer.one_shot = false
@@ -63,19 +65,20 @@ func _input(event: InputEvent) -> void:
 		charging = false
 
 func destroy_stuff() -> void :
-	var input_vector = pawn_digger.velocity.normalized()
+	destruct_overlaps()
+	# var input_vector = pawn_digger.velocity.normalized()
 
-	if input_vector.length_squared() == 0 : return
-	if abs(input_vector.x) >= abs(input_vector.y) :
-		if input_vector.x > 0 :
-			destroy_direction(safe_rect_right, unsafe_rect_right)
-		else :
-			destroy_direction(safe_rect_left, unsafe_rect_left)
-	else :
-		if input_vector.y > 0 :
-			destroy_direction(safe_rect_down, unsafe_rect_down)
-		else :
-			pass
+	# if input_vector.length_squared() == 0 : return
+	# if abs(input_vector.x) >= abs(input_vector.y) :
+	# 	if input_vector.x > 0 :
+	# 		destroy_direction(safe_rect_right, unsafe_rect_right)
+	# 	else :
+	# 		destroy_direction(safe_rect_left, unsafe_rect_left)
+	# else :
+	# 	if input_vector.y > 0 :
+	# 		destroy_direction(safe_rect_down, unsafe_rect_down)
+	# 	else :
+	# 		pass
 
 func destroy_direction(safe: CollisionShape2D, unsafe: CollisionShape2D) :
 	Terrain.inst.set_pixels_rect(get_rect_world(unsafe), true, false)

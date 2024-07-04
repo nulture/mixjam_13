@@ -1,4 +1,4 @@
-extends Area2D
+extends DestructArea
 
 @onready var character : CharacterBody2D = $".."
 @onready var shape := $shape.shape as CircleShape2D
@@ -15,13 +15,14 @@ var charging: bool:
 		if _charging :
 			anim_sprite.play("default")
 		else :
-			brush()
+			destruct_overlaps()
 			anim_sprite.stop()
 
 var radius_percent : float :
 	get : return float(anim_sprite.frame) / float(anim_sprite.sprite_frames.get_frame_count("default"))
 
 func _ready() -> void:
+	super._ready()
 	anim_sprite.visible = false
 	pass
 
@@ -38,8 +39,5 @@ func _input(event: InputEvent) -> void:
 
 func charge_anim_finished() -> void:
 	charging = false
-
-func brush() -> void :
-	Terrain.inst.set_pixels_circle($shape.global_position, shape.radius * radius_percent, false, false)
 	
 
