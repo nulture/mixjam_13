@@ -161,7 +161,8 @@ debug_camera_up={
 2d_physics/layer_2="block_digger"
 2d_physics/layer_3="block_brusher"
 2d_physics/layer_4="pawn"
-2d_physics/layer_5="destructible"
+2d_physics/layer_5="terrain"
+2d_physics/layer_6="fossil"
 
 [physics]
 

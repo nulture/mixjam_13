@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg1e1hbkqsrdr"]
+
+[ext_resource type="FontFile" uid="uid://bca2q32bjnm3o" path="res://assets/fonts/font_nes.ttf" id="1_64u6u"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_t0h5f"]
+font = ExtResource("1_64u6u")
+font_size = 28
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
+shadow_offset = Vector2(4, 4)
+
+[node name="bone_missing" type="Node2D"]
+
+[node name="label" type="Label" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -16.0
+offset_right = 20.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "?"
+label_settings = SubResource("LabelSettings_t0h5f")
+horizontal_alignment = 1
+vertical_alignment = 1
