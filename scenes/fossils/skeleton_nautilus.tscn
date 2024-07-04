@@ -4,12 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://dk6e1gb2mgfc7" path="res://scenes/fossils/fossil.tscn" id="2_ay780"]
 
 [node name="skeleton_nautilus" instance=ExtResource("1_5efg5")]
+title = "Early Swirly"
 
 [node name="fossil" parent="group" index="0" instance=ExtResource("2_ay780")]
-
-[node name="title" parent="." index="1"]
-offset_left = -59.0
-offset_top = 39.0
-offset_right = 59.0
-offset_bottom = 62.0
-text = "Ancient Swirly"

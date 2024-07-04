@@ -73,28 +73,28 @@ position = Vector2(172, 115)
 [node name="skeleton_nautilus_2" parent="terrain/destructible_root" instance=ExtResource("8_y7isn")]
 position = Vector2(107, 208)
 
-[node name="trex_foot" parent="terrain/destructible_root" instance=ExtResource("8_w0bmb")]
+[node name="skeleton_trex_foot" parent="terrain/destructible_root" instance=ExtResource("8_w0bmb")]
 position = Vector2(400, 194)
 
-[node name="trex_foot_0" parent="terrain/destructible_root/trex_foot/group" index="0"]
+[node name="trex_foot_0" parent="terrain/destructible_root/skeleton_trex_foot/group" index="0"]
 position = Vector2(-376, -75)
 
-[node name="trex_foot_1" parent="terrain/destructible_root/trex_foot/group" index="1"]
+[node name="trex_foot_1" parent="terrain/destructible_root/skeleton_trex_foot/group" index="1"]
 position = Vector2(-88, -91)
 
-[node name="trex_foot_2" parent="terrain/destructible_root/trex_foot/group" index="2"]
+[node name="trex_foot_2" parent="terrain/destructible_root/skeleton_trex_foot/group" index="2"]
 position = Vector2(-193, 106)
 
-[node name="trex_foot_3" parent="terrain/destructible_root/trex_foot/group" index="3"]
+[node name="trex_foot_3" parent="terrain/destructible_root/skeleton_trex_foot/group" index="3"]
 position = Vector2(-31, -9)
 
-[node name="trex_foot_4" parent="terrain/destructible_root/trex_foot/group" index="4"]
+[node name="trex_foot_4" parent="terrain/destructible_root/skeleton_trex_foot/group" index="4"]
 position = Vector2(4, 60)
 
-[node name="trex_foot_5" parent="terrain/destructible_root/trex_foot/group" index="5"]
+[node name="trex_foot_5" parent="terrain/destructible_root/skeleton_trex_foot/group" index="5"]
 position = Vector2(106, -109)
 
-[node name="trex_foot_6" parent="terrain/destructible_root/trex_foot/group" index="6"]
+[node name="trex_foot_6" parent="terrain/destructible_root/skeleton_trex_foot/group" index="6"]
 position = Vector2(109, 45)
 
 [node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
@@ -158,11 +158,11 @@ size_flags_vertical = 3
 
 [node name="end_level_screen" parent="." instance=ExtResource("9_5jd56")]
 
-[editable path="terrain/destructible_root/trex_foot"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_0"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_1"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_2"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_3"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_4"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_5"]
-[editable path="terrain/destructible_root/trex_foot/group/trex_foot_6"]
+[editable path="terrain/destructible_root/skeleton_trex_foot"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_0"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_1"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_2"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_3"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_4"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_5"]
+[editable path="terrain/destructible_root/skeleton_trex_foot/group/trex_foot_6"]

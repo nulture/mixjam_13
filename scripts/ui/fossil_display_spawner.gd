@@ -19,7 +19,7 @@ func _input(event: InputEvent) -> void:
 func register_fossil(fossil: Fossil) -> void:
 	var skeleton : FossilSkeleton = fossil.get_parent().get_parent()
 	var display := get_display(skeleton)
-	display.collected_fossils.append(fossil)
+	display.collected_fossils.append(fossil.name)
 	pass
 
 func get_display(skeleton: FossilSkeleton) -> FossilDisplay :

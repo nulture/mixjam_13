@@ -4,7 +4,9 @@ signal finished_reassemble
 
 const MAX_DISASSEMBLE_WIDTH : float = 500
 
-@onready var fossils : Array[Fossil] = get_sprites()
+@export var title : String
+
+@onready var fossils : Array[Node2D] = get_sprites()
 @onready var self_scene : PackedScene = Utils.get_scene_clean(self)
 @onready var anim_player : AnimationPlayer = $animation_player
 
@@ -13,6 +15,14 @@ var assembly_positions : Dictionary
 var is_missing_sprites : bool = false
 var is_assembling_sprites : bool = false
 var assembling_sprite_index : int = 0
+
+var can_be_reassembled: bool:
+	get:
+		for i in fossils :
+			var fossil := i as Fossil
+			if !fossil.sprite.is_destroyed :
+				return false
+		return true
 
 func _ready() -> void:
 	# print(fossils)
@@ -32,8 +42,8 @@ func _process(delta: float) -> void:
 			anim_player.play("flourish")
 			finished_reassemble.emit()
 
-func get_sprites() -> Array[Fossil]:
-	var result : Array[Fossil] = []
+func get_sprites() -> Array[Node2D]:
+	var result : Array[Node2D] = []
 	for i in find_children("*", "Fossil"):
 		result.append(i)
 	return result
@@ -50,15 +60,21 @@ func copy_images(other: FossilSkeleton) -> void:
 
 func copy_fresh() -> FossilSkeleton :
 	var result := self_scene.instantiate() as FossilSkeleton
-	copy_images(result)
+	copy_images.call_deferred(result)
 	return result
 
-func free_uncollected(collected: Array[StringName]) -> void:
+## Does [method copy_fresh] but replaces any non-included fossils with question marks.
+func copy_fresh_inclusive(include: Array[StringName]) -> FossilSkeleton :
+	var result = copy_fresh()
+	result.copy_fresh_inclusive_deferred.call_deferred(include)
+	return result
+
+func copy_fresh_inclusive_deferred(include: Array[StringName]) -> void :
 	for i in fossils:
-		if collected.has(i.name) : continue
+		if include.has(i.name) : continue
 		is_missing_sprites = true
-		fossils.erase(i)
-		i.queue_free()
+		i.visible = false
+
 
 func disassemble() -> void:
 	if fossils.size() == 0 :

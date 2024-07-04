@@ -1,7 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bwrtjhmf27v64"]
+[gd_scene load_steps=6 format=3 uid="uid://bwrtjhmf27v64"]
 
 [ext_resource type="Script" path="res://scripts/ui/fossil_display_spawner.gd" id="1_mij43"]
 [ext_resource type="PackedScene" uid="uid://76jcih56hlgl" path="res://scenes/fossils/fossil_display.tscn" id="2_7g0y5"]
+[ext_resource type="FontFile" uid="uid://bca2q32bjnm3o" path="res://assets/fonts/font_nes.ttf" id="3_s3jf6"]
+[ext_resource type="LabelSettings" uid="uid://bdojf6uy0sh31" path="res://assets/fonts/font_nes_settings.tres" id="4_u4wpb"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0tw3h"]
+font = ExtResource("3_s3jf6")
+font_size = 14
+shadow_size = 0
+shadow_color = Color(0, 0, 0, 1)
 
 [node name="end_level_screen" type="Node2D"]
 
@@ -9,3 +17,60 @@
 position = Vector2(320, 540)
 script = ExtResource("1_mij43")
 fossil_display_scene = ExtResource("2_7g0y5")
+
+[node name="info_root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 320.0
+offset_top = 280.0
+offset_right = 320.0
+offset_bottom = 280.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="title" type="Label" parent="info_root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -12.0
+offset_top = -4.0
+offset_right = 12.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "???"
+label_settings = SubResource("LabelSettings_0tw3h")
+horizontal_alignment = 1
+vertical_alignment = 1
+uppercase = true
+
+[node name="recovered_info" type="Label" parent="info_root"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = 19.0
+offset_right = 50.0
+offset_bottom = 38.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "98% recovered
+2% destroyed
+-or-
+pristine condition"
+label_settings = ExtResource("4_u4wpb")
+horizontal_alignment = 1
+uppercase = true
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+root_node = NodePath("../fossil_display_spawner")
