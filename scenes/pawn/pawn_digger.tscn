@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bxgwl1et1p84x"]
+[gd_scene load_steps=10 format=3 uid="uid://bxgwl1et1p84x"]
 
 [ext_resource type="Script" path="res://scripts/pawn/pawn_digger.gd" id="1_ejaju"]
 [ext_resource type="PackedScene" uid="uid://4ob7ckqiacwi" path="res://scenes/pawn/pawn_base.tscn" id="1_wvhoa"]
@@ -6,12 +6,6 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aq7kw"]
 size = Vector2(86, 54)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nkorf"]
-size = Vector2(130, 70)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sb156"]
-size = Vector2(110, 60)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g211y"]
 size = Vector2(10, 58)
@@ -39,7 +33,7 @@ collision_layer = 8
 motion_mode = 1
 script = ExtResource("1_ejaju")
 speed_normal = 100.0
-speed_digging = 25.0
+speed_digging = 40.0
 speed_down_add = 6.0
 friction = Vector2(0.05, 0.05)
 
@@ -47,48 +41,66 @@ friction = Vector2(0.05, 0.05)
 position = Vector2(5, -1)
 shape = SubResource("RectangleShape2D_aq7kw")
 
-[node name="dig_area" type="Area2D" parent="." index="1" node_paths=PackedStringArray("safe_colliders", "unsafe_colliders")]
+[node name="area_safe_left" type="Area2D" parent="." index="1"]
+position = Vector2(0, -1)
 collision_layer = 0
 collision_mask = 16
 script = ExtResource("3_kqce2")
-dig_delay = 0.1
-safe_colliders = [NodePath("safe_rect_left"), NodePath("safe_rect_right"), NodePath("safe_rect_down")]
-unsafe_colliders = [NodePath("unsafe_rect_left"), NodePath("unsafe_rect_right"), NodePath("unsafe_rect_down")]
+gentle = true
 
-[node name="safe_shape" type="CollisionShape2D" parent="dig_area" index="0"]
-visible = false
-position = Vector2(0, 7)
-shape = SubResource("RectangleShape2D_nkorf")
-
-[node name="unsafe_shape" type="CollisionShape2D" parent="dig_area" index="1"]
-visible = false
-position = Vector2(0, 2)
-shape = SubResource("RectangleShape2D_sb156")
-
-[node name="safe_rect_left" type="CollisionShape2D" parent="dig_area" index="2"]
-position = Vector2(-63, -1)
+[node name="safe_rect_left" type="CollisionShape2D" parent="area_safe_left" index="0"]
+position = Vector2(-63, 0)
 shape = SubResource("RectangleShape2D_g211y")
 
-[node name="safe_rect_right" type="CollisionShape2D" parent="dig_area" index="3"]
-position = Vector2(63, -1)
+[node name="area_safe_right" type="Area2D" parent="." index="2"]
+position = Vector2(0, -1)
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_kqce2")
+gentle = true
+
+[node name="safe_rect_right" type="CollisionShape2D" parent="area_safe_right" index="0"]
+position = Vector2(63, 0)
 shape = SubResource("RectangleShape2D_g211y")
 
-[node name="safe_rect_down" type="CollisionShape2D" parent="dig_area" index="4"]
-position = Vector2(0, 41)
+[node name="area_safe_down" type="Area2D" parent="." index="3"]
+position = Vector2(0, -1)
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_kqce2")
+gentle = true
+
+[node name="safe_rect_down" type="CollisionShape2D" parent="area_safe_down" index="0"]
+position = Vector2(0, 42)
 shape = SubResource("RectangleShape2D_6p5bq")
 
-[node name="unsafe_rect_left" type="CollisionShape2D" parent="dig_area" index="5"]
+[node name="area_unsafe_left" type="Area2D" parent="." index="4"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_kqce2")
+
+[node name="unsafe_rect_left" type="CollisionShape2D" parent="area_unsafe_left" index="0"]
 position = Vector2(-48, -1)
 shape = SubResource("RectangleShape2D_twinl")
 
-[node name="unsafe_rect_right" type="CollisionShape2D" parent="dig_area" index="6"]
+[node name="area_unsafe_right" type="Area2D" parent="." index="5"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_kqce2")
+
+[node name="unsafe_rect_right" type="CollisionShape2D" parent="area_unsafe_right" index="0"]
 position = Vector2(53, -1)
 shape = SubResource("RectangleShape2D_g211y")
 
-[node name="unsafe_rect_down" type="CollisionShape2D" parent="dig_area" index="7"]
+[node name="area_unsafe_down" type="Area2D" parent="." index="6"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("3_kqce2")
+
+[node name="unsafe_rect_down" type="CollisionShape2D" parent="area_unsafe_down" index="0"]
 position = Vector2(0, 31)
 shape = SubResource("RectangleShape2D_6p5bq")
 
-[node name="sprite_placeholder" parent="." index="2"]
+[node name="sprite_placeholder" parent="." index="7"]
 position = Vector2(0, -2)
 texture = SubResource("ImageTexture_1lah1")

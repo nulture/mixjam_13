@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbx2ne1uekr83"]
+[gd_scene load_steps=7 format=3 uid="uid://dbx2ne1uekr83"]
 
 [ext_resource type="PackedScene" uid="uid://bxgwl1et1p84x" path="res://scenes/pawn/pawn_digger.tscn" id="1_hqru8"]
-[ext_resource type="PackedScene" uid="uid://prb2lt1jxqms" path="res://scenes/pawn/pawn_brusher.tscn" id="2_ffhiy"]
+[ext_resource type="PackedScene" uid="uid://prb2lt1jxqms" path="res://scenes/pawn/pawn_cleaner.tscn" id="2_ffhiy"]
 [ext_resource type="Texture2D" uid="uid://cieuh44rwm35o" path="res://assets/textures/t_level_test.png" id="3_dv3jd"]
 [ext_resource type="Script" path="res://scripts/terrain/terrain.gd" id="3_m02dc"]
+[ext_resource type="PackedScene" uid="uid://c61vb6ovu6wvi" path="res://scenes/destructibles/fossils/fossil_base.tscn" id="5_edk4b"]
 [ext_resource type="PackedScene" uid="uid://dflbjfr1w12x2" path="res://scenes/destructibles/destructible_base.tscn" id="5_xse44"]
 
 [node name="test_level" type="Node2D"]
@@ -11,12 +12,16 @@
 [node name="pawn_digger" parent="." instance=ExtResource("1_hqru8")]
 position = Vector2(87, 102)
 
-[node name="destructible" parent="." instance=ExtResource("5_xse44")]
-position = Vector2(145, 32)
+[node name="fossil_collection" type="Node2D" parent="."]
+
+[node name="fossil_base" parent="fossil_collection" instance=ExtResource("5_edk4b")]
+position = Vector2(195, 51)
 
 [node name="terrain" type="Node2D" parent="."]
+position = Vector2(1, 0)
 script = ExtResource("3_m02dc")
-image = ExtResource("3_dv3jd")
+chunk_prefab = ExtResource("5_xse44")
+texture = ExtResource("3_dv3jd")
 
-[node name="pawn_brusher" parent="." instance=ExtResource("2_ffhiy")]
+[node name="pawn_cleaner" parent="." instance=ExtResource("2_ffhiy")]
 position = Vector2(73, 43)

@@ -21,7 +21,6 @@ func _get_global_rect() -> Rect2i:
 
 
 func destruct_overlaps() -> void:
-	print("Destruct overlaps ", overlaps)
 	for i in overlaps:
 		if gentle && i.tough : continue
 		destruct_single(i)

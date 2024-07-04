@@ -41,7 +41,7 @@ func _input(event: InputEvent) -> void:
 var temp_origin_local : Vector2i
 var temp_radius : float
 
-func _get_global_rect() -> Rect2i:
+func _get_global_rect() -> Rect2i :
 	var origin := Vector2i($shape.global_position)
 	temp_origin_local = origin - temp_destructible.global_rect.position
 	temp_radius = shape.radius * radius_percent
