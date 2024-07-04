@@ -4,6 +4,7 @@ extends DestructArea
 @onready var shape := $shape.shape as CircleShape2D
 @onready var anim_sprite := $shape/sprite as AnimatedSprite2D
 
+
 var _charging: bool
 var charging: bool:
 	get: return _charging
@@ -36,6 +37,20 @@ func _input(event: InputEvent) -> void:
 		charging = true
 	elif Input.is_action_just_released("p2_primary") :
 		charging = false
+
+var temp_origin_local : Vector2i
+var temp_radius : float
+
+func _get_global_rect() -> Rect2i:
+	var origin := Vector2i($shape.global_position)
+	temp_origin_local = origin - temp_destructible.global_rect.position
+	temp_radius = shape.radius * radius_percent
+	return Rect2i(origin - Vector2i.ONE * ceili(temp_radius), Vector2i.ONE * ceili(temp_radius) * 2)
+
+func _pixel_lambda(xy: Vector2i) -> bool:
+	var dist = (xy - temp_origin_local).length()
+	if dist > temp_radius : return false
+	return true
 
 func charge_anim_finished() -> void:
 	charging = false

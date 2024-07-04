@@ -12,7 +12,7 @@
 position = Vector2(87, 102)
 
 [node name="destructible" parent="." instance=ExtResource("5_xse44")]
-position = Vector2(204, 152)
+position = Vector2(145, 32)
 
 [node name="terrain" type="Node2D" parent="."]
 script = ExtResource("3_m02dc")
