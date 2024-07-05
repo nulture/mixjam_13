@@ -10,11 +10,11 @@ config_version=5
 
 [application]
 
-config/name="mixjam_13"
+config/name="Prototype 002"
 run/main_scene="res://scenes/levels/test_level.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 boot_splash/show_image=false
-config/icon="res://icon.svg"
+config/icon="res://assets/sprites/digger_chassis.png"
 
 [autoload]
 
